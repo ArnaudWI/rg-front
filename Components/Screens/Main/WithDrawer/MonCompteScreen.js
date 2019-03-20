@@ -1,13 +1,16 @@
 import React from 'react';
 //import bibliothèque react native
-
+import {StyleSheet, ScrollView} from 'react-native';
 //import bibliothèque native base
 import {
   View,
   Text,
   Button,
-  Icon
+  Icon,
+  Container
 } from 'native-base';
+// import des composants JS
+import HeaderMenuComposant from '../../../Composants/HeaderMenuComposant';
 
 
 export default class MonCompteScreen extends React.Component {
@@ -19,11 +22,18 @@ export default class MonCompteScreen extends React.Component {
 
   render() {
     return (
-      <View style={{flex:1, justifyContent: 'center', alignSelf: 'center'}}>
-
-            <Text>MonCompteScreen</Text>
-
-      </View>
+      <Container style={styles.container}>
+        <HeaderMenuComposant title={'Mon Compte'}/>
+          <ScrollView style={{flex: 1, alignSelf: 'center'}}>
+              <Text>Mon compte</Text>
+          </ScrollView>
+      </Container>
     );
   }
 }
+
+const styles = StyleSheet.create({
+  container: {
+    backgroundColor: '#373737'
+  },
+});

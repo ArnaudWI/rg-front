@@ -1,13 +1,16 @@
 import React from 'react';
 //import bibliothèque react native
-
+import {StyleSheet, ScrollView} from 'react-native';
 //import bibliothèque native base
 import {
   View,
   Text,
   Button,
-  Icon
+  Icon,
+  Container
 } from 'native-base';
+// import des composants JS
+import HeaderMenuComposant from '../../../Composants/HeaderMenuComposant';
 
 
 export default class RDVTrainingScreen extends React.Component {
@@ -18,15 +21,21 @@ export default class RDVTrainingScreen extends React.Component {
   }
   render() {
     return (
-      <View style={{flex:1, justifyContent: 'center', alignSelf: 'center'}}>
-
-            <Text>RDVTrainingScreen</Text>
-
+      <Container style={styles.container}>
+        <HeaderMenuComposant title={'RDV Training'}/>
+          <ScrollView style={{flex: 1, alignSelf: 'center'}}>
             <Button danger onPress={ ()=> this.props.navigation.navigate('RDVTrainingDetails')}>
               <Text>RDV Training Details</Text>
             </Button>
-
-      </View>
+          </ScrollView>
+      </Container>
     );
   }
 }
+
+
+const styles = StyleSheet.create({
+  container: {
+    backgroundColor: '#373737'
+  },
+});

@@ -1,14 +1,16 @@
 import React from 'react';
 //import bibliothèque react native
-import {StyleSheet} from 'react-native';
+import {StyleSheet, ScrollView} from 'react-native';
 //import bibliothèque native base
 import {
   View,
   Text,
   Button,
-  Icon
+  Icon,
+  Container
 } from 'native-base';
-
+// import des composants JS
+import HeaderMenuComposant from '../../../Composants/HeaderMenuComposant';
 
 export default class PlanningScreen extends React.Component {
   static navigationOptions = {
@@ -18,11 +20,19 @@ export default class PlanningScreen extends React.Component {
   }
   render() {
     return (
-      <View style={{flex:1, justifyContent: 'center', alignSelf: 'center'}}>
-
+      <Container style={styles.container}>
+        <HeaderMenuComposant title={'Planning'}/>
+          <ScrollView style={{flex: 1, alignSelf: 'center'}}>
             <Text>PlanningScreen</Text>
-
-      </View>
+          </ScrollView>
+      </Container>
     );
   }
 }
+
+
+const styles = StyleSheet.create({
+  container: {
+    backgroundColor: '#373737'
+  },
+});
