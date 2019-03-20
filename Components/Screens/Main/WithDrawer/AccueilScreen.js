@@ -1,13 +1,16 @@
 import React from 'react';
 //import bibliothèque react native
-import {StyleSheet} from 'react-native';
+import {StyleSheet, ScrollView} from 'react-native';
 //import bibliothèque native base
 import {
   View,
   Text,
   Button,
-  Icon
+  Icon,
+  Container
 } from 'native-base';
+// import des composants JS
+import HeaderMenuComposant from '../../../Composants/HeaderMenuComposant';
 
 
 export default class AccueilScreen extends React.Component {
@@ -18,21 +21,20 @@ export default class AccueilScreen extends React.Component {
   }
   render() {
     return (
-      <View style={{flex:1, justifyContent: 'center', alignSelf: 'center'}}>
-
-            <Text>AccueilScreen</Text>
-
+      <Container style={styles.container}>
+        <HeaderMenuComposant title={'Ring Side - Dardilly'}/>
+          <ScrollView style={{flex: 1, alignSelf: 'center'}}>
             <Button danger onPress={ ()=> this.props.navigation.navigate('AddAnnonce')}>
               <Text>Ajouter une annonce</Text>
             </Button>
-
-      </View>
+          </ScrollView>
+      </Container>
     );
   }
 }
 
 const styles = StyleSheet.create({
-  icon: {
-    fontSize: 17
+  container: {
+    backgroundColor: '#373737'
   },
 });

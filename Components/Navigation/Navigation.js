@@ -64,7 +64,9 @@ const MainNavigator = createDrawerNavigator({
   contentOptions: {
     activeTintColor: '#E52D2F',
     inactiveTintColor: 'white'
-  }
+  },
+  drawerOpenRoute: 'DrawerOpen',
+  drawerCloseRoute: 'DrawerClose'
 });
 
 // Création de ma navigation globale qui contient à la fois mes pages non contenues
