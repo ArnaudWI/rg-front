@@ -18,6 +18,32 @@ import {
 
 
 export default class SignInScreen extends React.Component {
+
+    state = {
+      firstName: '',
+      lastName: '',
+      email: '',
+      password: ''
+    };
+
+    handleSubmit = () => {
+      fetch('http://192.168.0.19:3000/signup', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+        body: 'firstName='+this.state.firstName+'&lastName='+this.state.lastName+'&email='+this.state.email+'&password='+this.state.password
+      })
+      .then(response => response.json())
+      .then(data => {
+        if (data.user) {
+          console.log(data.user)
+          this.props.navigation.navigate('Accueil');
+        } else {
+          console.log('erreur de log')
+        }
+      })
+      .catch(error => console.error(error))
+    };
+
   render() {
     return (
       <ImageBackground style={{flex:1}} source={require("../../../public/images/img-bg.jpg")}>
@@ -28,23 +54,23 @@ export default class SignInScreen extends React.Component {
           <Form style={styles.form}>
             <Item floatingLabel style={styles.item}>
               <Label style={styles.label} >Prénom</Label>
-              <Input style={styles.input}/>
+              <Input style={styles.input} onChangeText={(text) => this.setState({firstName: text})}/>
             </Item>
             <Item floatingLabel style={styles.item}>
               <Label style={styles.label} >Nom</Label>
-              <Input style={styles.input}/>
+              <Input style={styles.input} onChangeText={(text) => this.setState({lastName: text})}/>
             </Item>
             <Item floatingLabel style={styles.item}>
               <Label style={styles.label} >Email</Label>
-              <Input style={styles.input}/>
+              <Input style={styles.input} onChangeText={(text) => this.setState({email: text})}/>
             </Item>
             <Item floatingLabel style={styles.item}>
               <Label style={styles.label} >Mot de passe</Label>
-              <Input style={styles.input}/>
+              <Input style={styles.input} onChangeText={(text) => this.setState({password: text})}/>
             </Item>
           </Form>
 
-          <Button style={styles.bouton} onPress={ ()=> this.props.navigation.navigate('Accueil')}>
+          <Button style={styles.bouton} onPress={this.handleSubmit}>
             <Text style={styles.textBouton}>Valider mon inscription</Text>
           </Button>
 

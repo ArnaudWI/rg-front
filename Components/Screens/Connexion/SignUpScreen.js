@@ -13,11 +13,31 @@ import {
   Form,
   Item,
   Input,
-  Label
+  Label,
+  Icon
 } from 'native-base';
 
 
 export default class SignUpScreen extends React.Component {
+  state = {
+    email: '',
+    password: ''
+  };
+
+  handleSubmit = (text) => {
+    fetch(`http://192.168.0.19:3000/signin?email=${this.state.email}&password=${this.state.password}`)
+    .then(response => response.json())
+    .then(data => {
+      console.log(data)
+      if (data.isUserExist) {
+        this.setState({error: null});
+        this.props.navigation.navigate('Accueil');
+      } else {
+        this.setState({error: "l'identifiant ou/et le mot de passe sont incorrects"});
+      }
+    }).catch(error => console.error(error));
+  };
+
   render() {
     return (
       <ImageBackground style={{flex:1}} source={require("../../../public/images/img-bg.jpg")}>
@@ -27,17 +47,17 @@ export default class SignUpScreen extends React.Component {
         <Image source={require('../../../public/logo/logo-rg.png')} style={styles.logo}/>
 
         <Form style={styles.form}>
-          <Item floatingLabel style={styles.item}>
+          <Item success floatingLabel style={styles.item}>
             <Label style={styles.label} >Email</Label>
-            <Input style={styles.input}/>
+            <Input style={styles.input} onChangeText={text => this.setState({email: text})}/>
           </Item>
           <Item floatingLabel style={styles.item}>
             <Label style={styles.label} >Mot de passe</Label>
-            <Input style={styles.input}/>
+            <Input style={styles.input} onChangeText={text => this.setState({password: text})}/>
           </Item>
         </Form>
 
-        <Button style={styles.bouton} onPress={ ()=> this.props.navigation.navigate('Accueil')}>
+        <Button style={styles.bouton} onPress={this.handleSubmit}>
           <Text style={styles.textBouton}>Connexion</Text>
         </Button>
 
