@@ -1,6 +1,6 @@
 import React from 'react';
 //import bibliothèque react native
-import {StyleSheet, ScrollView} from 'react-native';
+import {StyleSheet, ScrollView, Image, Dimensions} from 'react-native';
 //import bibliothèque native base
 import {
   View,
@@ -11,6 +11,9 @@ import {
 } from 'native-base';
 // import des composants JS
 import HeaderMenuComposant from '../../../Composants/HeaderMenuComposant';
+import TitleComposant from '../../../Composants/TitleComposant';
+import PhotoZoomComposant from '../../../Composants/PhotoZoomComposant';
+
 
 export default class PlanningScreen extends React.Component {
   static navigationOptions = {
@@ -23,7 +26,8 @@ export default class PlanningScreen extends React.Component {
       <Container style={styles.container}>
         <HeaderMenuComposant title={'Planning'}/>
           <ScrollView style={{flex: 1, alignSelf: 'center'}}>
-            <Text>PlanningScreen</Text>
+            <TitleComposant title={'Saison 2018/2019'}/>
+            <PhotoZoomComposant/>
           </ScrollView>
       </Container>
     );
@@ -34,5 +38,5 @@ export default class PlanningScreen extends React.Component {
 const styles = StyleSheet.create({
   container: {
     backgroundColor: '#373737'
-  },
+  }
 });
