@@ -57,7 +57,7 @@ export default class SignUpScreen extends React.Component {
           </Item>
         </Form>
 
-        <Button style={styles.bouton} onPress={ ()=> this.props.navigation.navigate('Planning')}>
+        <Button style={styles.bouton} onPress={this.handleSubmit}>
           <Text style={styles.textBouton}>Connexion</Text>
         </Button>
 

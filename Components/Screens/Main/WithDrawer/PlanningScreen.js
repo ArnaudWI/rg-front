@@ -13,7 +13,7 @@ import {
 import HeaderMenuComposant from '../../../Composants/HeaderMenuComposant';
 import TitleComposant from '../../../Composants/TitleComposant';
 import PhotoZoomComposant from '../../../Composants/PhotoZoomComposant';
-
+import ScrollableTabPlanning from '../../../Composants/ScrollableTabPlanning';
 
 export default class PlanningScreen extends React.Component {
   static navigationOptions = {
@@ -28,6 +28,7 @@ export default class PlanningScreen extends React.Component {
           <ScrollView style={{flex: 1, alignSelf: 'center'}}>
             <TitleComposant title={'Saison 2018/2019'}/>
             <PhotoZoomComposant/>
+            <ScrollableTabPlanning/>
           </ScrollView>
       </Container>
     );
