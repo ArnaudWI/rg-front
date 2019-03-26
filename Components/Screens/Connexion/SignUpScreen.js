@@ -14,7 +14,7 @@ import {
   Item,
   Input,
   Label,
-  Icon
+  Toast
 } from 'native-base';
 
 
@@ -33,7 +33,11 @@ export default class SignUpScreen extends React.Component {
         this.setState({error: null});
         this.props.navigation.navigate('Accueil');
       } else {
-        this.setState({error: "l'identifiant ou/et le mot de passe sont incorrects"});
+        Toast.show({
+          text: "Mot de passe ou identifiant erronés !",
+          position: "top",
+          duration: 2000
+        })
       }
     }).catch(error => console.error(error));
   };
@@ -57,7 +61,7 @@ export default class SignUpScreen extends React.Component {
           </Item>
         </Form>
 
-        <Button style={styles.bouton} onPress={this.handleSubmit}>
+        <Button style={styles.bouton} onPress={() => this.props.navigation.navigate('Wod de la semaine')}>
           <Text style={styles.textBouton}>Connexion</Text>
         </Button>
 

@@ -1,5 +1,6 @@
 import React from 'react';
 
+import { Root } from "native-base";
 //import de ma navigation
 import Navigation from './Components/Navigation/Navigation';
 
@@ -12,6 +13,9 @@ import Navigation from './Components/Navigation/Navigation';
 export default class App extends React.Component {
   render() {
     return (
-      <Navigation/>);
+      <Root>
+        <Navigation/>
+      </Root>
+      );
   }
 }
