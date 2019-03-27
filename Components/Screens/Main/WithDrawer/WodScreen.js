@@ -19,6 +19,25 @@ export default class WodScreen extends React.Component {
       <Icon active name="pulse" style={{fontSize: 17, color: tintColor}}/>
     )
   }
+
+  state = {
+    wod: '',
+    date: ''
+  };
+
+
+  componentDidMount() {
+    fetch('http://192.168.0.19:3000/wod/read')
+      .then(response => response.json())
+      .then(data => {
+        this.setState({
+          wod: data.wod.wod,
+          date: data.wod.date
+        })
+      })
+      .catch(error => console.log('Request failed', error));
+  }
+
   render() {
     return (
       <Container style={styles.container}>
@@ -29,10 +48,10 @@ export default class WodScreen extends React.Component {
               <Text style={styles.textBouton} >Modifier le Wod</Text>
             </Button>
 
-            <TitleComposant title={'Wod du 26/03'}/>
+            <TitleComposant title={'Wod du ' + this.state.date}/>
 
             <View style={styles.viewWod}>
-              <Text style={styles.textWod}>Bonjour je suis le Wod</Text>
+              <Text style={styles.textWod}>{this.state.wod}</Text>
             </View>
 
           </ScrollView>

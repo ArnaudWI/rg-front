@@ -30,7 +30,6 @@ export default class SignUpScreen extends React.Component {
     .then(data => {
       console.log(data)
       if (data.isUserExist) {
-        this.setState({error: null});
         this.props.navigation.navigate('Accueil');
       } else {
         Toast.show({

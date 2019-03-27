@@ -16,28 +16,34 @@ import {
 import HeaderBackComposant from '../../../Composants/HeaderBackComposant';
 
 
-
 export default class ModifyWodScreen extends React.Component {
-
-  handleSubmit = () => {
-    let today = new Date()
-    console.log(today)
-    let dd = today.getDate();
-    var mm = today.getMonth() + 1;
-    if (dd < 10) {
-      dd = '0' + dd;
-    }
-    if (mm < 10) {
-      mm = '0' + mm;
-    }
-    today = dd + '/' + mm;
-    console.log(today)
-      Toast.show({
-    text: "Wod modifié !",
-    type: "success"
-    })
-    this.props.navigation.navigate('Wod de la semaine');
+  state = {
+    wod: ''
   };
+
+handleSubmit = () => {
+  let today = new Date()
+  let dd = today.getDate();
+  let mm = today.getMonth() + 1;
+  if (dd < 10) {
+    dd = '0' + dd;
+  }
+  if (mm < 10) {
+    mm = '0' + mm;
+  }
+  today = dd + '/' + mm;
+  let date = String(today)
+  fetch('http://192.168.0.19:3000/wod/', {
+    method: 'PUT',
+    headers: {'Content-Type':'application/x-www-form-urlencoded'},
+    body: 'wod='+this.state.wod+'&date='+date
+  });
+    Toast.show({
+  text: "Wod modifié !",
+  type: "success"
+  })
+  this.props.navigation.navigate('Wod de la semaine');
+};
 
   render() {
 
@@ -47,7 +53,13 @@ export default class ModifyWodScreen extends React.Component {
           <ScrollView style={{flex: 1, alignSelf: 'center'}}>
 
             <Form>
-              <Textarea style={styles.textArea} rowSpan={15} bordered placeholder="Modifier le Wod ici" />
+              <Textarea
+                style={styles.textArea}
+                rowSpan={15}
+                bordered
+                placeholder="Modifier le Wod ici"
+                onChangeText={text => this.setState({wod: text})}
+              />
             </Form>
 
             <Button style={styles.bouton} onPress={this.handleSubmit}>
