@@ -12,6 +12,11 @@ import {
 // import des composants JS
 import HeaderMenuComposant from '../../../Composants/HeaderMenuComposant';
 import TitleComposant from '../../../Composants/TitleComposant';
+// import des sockets côté front
+import socketIOClient from "socket.io-client";
+// connection avec le backend sur l'ip spécifiée ci-dessous
+const io = socketIOClient('http://192.168.0.19:3000/');
+
 
 export default class WodScreen extends React.Component {
   static navigationOptions = {
@@ -27,16 +32,34 @@ export default class WodScreen extends React.Component {
 
 
   componentDidMount() {
-    fetch('http://192.168.0.19:3000/wod/read')
-      .then(response => response.json())
-      .then(data => {
+    io.emit("readWod");
+    io.on('wodReaded', wod => {
         this.setState({
-          wod: data.wod.wod,
-          date: data.wod.date
+          wod: wod.wod,
+          date: wod.date
         })
-      })
-      .catch(error => console.log('Request failed', error));
+      console.log(wod)
+    });
+    // fetch('http://192.168.0.19:3000/wod/read')
+    //   .then(response => response.json())
+    //   .then(data => {
+    //     this.setState({
+    //       wod: data.wod.wod,
+    //       date: data.wod.date
+    //     })
+    //   })
+    //   .catch(error => console.log('Request failed', error));
   }
+
+  handleSubmit = () => {
+    io.emit("readWod");
+    io.on('wodReaded', wod => {
+      this.setState({
+        wod: wod.wod,
+        date: wod.date
+      })
+    });
+  };
 
   render() {
     return (
@@ -46,6 +69,10 @@ export default class WodScreen extends React.Component {
 
             <Button style={styles.bouton} onPress={ ()=> this.props.navigation.navigate('ModifyWod')}>
               <Text style={styles.textBouton} >Modifier le Wod</Text>
+            </Button>
+
+            <Button style={styles.bouton} onPress={this.handleSubmit}>
+              <Text style={styles.textBouton} >Refresh le Wod</Text>
             </Button>
 
             <TitleComposant title={'Wod du ' + this.state.date}/>

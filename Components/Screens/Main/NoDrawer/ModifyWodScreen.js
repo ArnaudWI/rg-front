@@ -14,36 +14,35 @@ import {
 } from 'native-base';
 // import des composants JS
 import HeaderBackComposant from '../../../Composants/HeaderBackComposant';
-
+// import des sockets côté front
+import socketIOClient from "socket.io-client";
+// connection avec le backend sur l'ip spécifiée ci-dessous
+const io = socketIOClient('http://192.168.0.19:3000/');
 
 export default class ModifyWodScreen extends React.Component {
   state = {
     wod: ''
   };
 
-handleSubmit = () => {
-  let today = new Date()
-  let dd = today.getDate();
-  let mm = today.getMonth() + 1;
-  if (dd < 10) {
-    dd = '0' + dd;
-  }
-  if (mm < 10) {
-    mm = '0' + mm;
-  }
-  today = dd + '/' + mm;
-  let date = String(today)
-  fetch('http://192.168.0.19:3000/wod/', {
-    method: 'PUT',
-    headers: {'Content-Type':'application/x-www-form-urlencoded'},
-    body: 'wod='+this.state.wod+'&date='+date
-  });
-    Toast.show({
-  text: "Wod modifié !",
-  type: "success"
-  })
-  this.props.navigation.navigate('Wod de la semaine');
-};
+  handleSubmit = () => {
+    let today = new Date()
+    let dd = today.getDate();
+    let mm = today.getMonth() + 1;
+    if (dd < 10) {
+      dd = '0' + dd;
+    }
+    if (mm < 10) {
+      mm = '0' + mm;
+    }
+    today = dd + '/' + mm;
+    let date = String(today)
+      Toast.show({
+    text: "Wod modifié !",
+    type: "success"
+    })
+    io.emit("updateWod", this.state.wod , date, "wod");
+    this.props.navigation.navigate('Wod de la semaine')
+  };
 
   render() {
 
