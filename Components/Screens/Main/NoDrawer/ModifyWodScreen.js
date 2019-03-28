@@ -18,11 +18,22 @@ import HeaderBackComposant from '../../../Composants/HeaderBackComposant';
 import socketIOClient from "socket.io-client";
 // connection avec le backend sur l'ip spécifiée ci-dessous
 const io = socketIOClient('http://192.168.0.19:3000/');
+// import de redux
+import {connect} from 'react-redux';
 
-export default class ModifyWodScreen extends React.Component {
+class ModifyWodScreen extends React.Component {
   state = {
     wod: ''
   };
+
+  componentDidMount() {
+    io.on('wodUpdated', wod => {
+        // this.setState({
+        //   wod: wod.wod,
+        //   date: wod.date
+        // })
+    });
+  }
 
   handleSubmit = () => {
     let today = new Date()
@@ -41,7 +52,8 @@ export default class ModifyWodScreen extends React.Component {
     type: "success"
     })
     io.emit("updateWod", this.state.wod , date, "wod");
-    this.props.navigation.navigate('Wod de la semaine')
+    this.props.handleWod(this.state.wod, date);
+    this.props.navigation.navigate('Wod de la semaine');
   };
 
   render() {
@@ -70,6 +82,23 @@ export default class ModifyWodScreen extends React.Component {
     );
   }
 }
+
+function mapDispatchToProps(dispatch) {
+ return {
+  handleWod: function(wodContent, wodDate) {
+    dispatch({
+      type: 'wodUpdate',
+      wod: wodContent,
+      date: wodDate
+    })
+  }
+ }
+}
+
+export default connect(
+  null,
+  mapDispatchToProps
+)(ModifyWodScreen);
 
 const styles = StyleSheet.create({
   container: {

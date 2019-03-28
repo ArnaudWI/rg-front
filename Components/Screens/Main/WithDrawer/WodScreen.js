@@ -16,9 +16,10 @@ import TitleComposant from '../../../Composants/TitleComposant';
 import socketIOClient from "socket.io-client";
 // connection avec le backend sur l'ip spécifiée ci-dessous
 const io = socketIOClient('http://192.168.0.19:3000/');
+// import de redux
+import {connect} from 'react-redux';
 
-
-export default class WodScreen extends React.Component {
+class WodScreen extends React.Component {
   static navigationOptions = {
     drawerIcon: ({ tintColor }) => (
       <Icon active name="pulse" style={{fontSize: 17, color: tintColor}}/>
@@ -38,7 +39,6 @@ export default class WodScreen extends React.Component {
           wod: wod.wod,
           date: wod.date
         })
-      console.log(wod)
     });
     // fetch('http://192.168.0.19:3000/wod/read')
     //   .then(response => response.json())
@@ -51,17 +51,15 @@ export default class WodScreen extends React.Component {
     //   .catch(error => console.log('Request failed', error));
   }
 
-  handleSubmit = () => {
-    io.emit("readWod");
-    io.on('wodReaded', wod => {
-      this.setState({
-        wod: wod.wod,
-        date: wod.date
-      })
-    });
-  };
-
   render() {
+
+    let dateDisplay;
+    if (this.props.wod.date === undefined) {
+      dateDisplay = this.state.date;
+    } else {
+      dateDisplay = this.props.wod.date;
+    }
+
     return (
       <Container style={styles.container}>
         <HeaderMenuComposant title={'Wod de la Semaine'}/>
@@ -71,14 +69,12 @@ export default class WodScreen extends React.Component {
               <Text style={styles.textBouton} >Modifier le Wod</Text>
             </Button>
 
-            <Button style={styles.bouton} onPress={this.handleSubmit}>
-              <Text style={styles.textBouton} >Refresh le Wod</Text>
-            </Button>
-
-            <TitleComposant title={'Wod du ' + this.state.date}/>
+            <TitleComposant title={'Wod du ' + dateDisplay}/>
 
             <View style={styles.viewWod}>
-              <Text style={styles.textWod}>{this.state.wod}</Text>
+              {this.props.wod.wod === undefined
+                ? <Text style={styles.textWod}>{this.state.wod}</Text>
+                : <Text style={styles.textWod}>{this.props.wod.wod}</Text>}
             </View>
 
           </ScrollView>
@@ -87,6 +83,20 @@ export default class WodScreen extends React.Component {
   }
 }
 
+function mapStateToProps(state) {
+  return {
+    wod: state.wodData
+  };
+  this.setState({
+    wod: this.props.wod.wod,
+    date: this.props.wod.date
+  })
+}
+
+export default connect(
+  mapStateToProps,
+  null
+)(WodScreen);
 
 const styles = StyleSheet.create({
   container: {
