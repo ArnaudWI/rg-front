@@ -31,6 +31,16 @@ class WodScreen extends React.Component {
     date: ''
   };
 
+  constructor() {
+    super();
+
+    io.on('wodReaded', wod => {
+        this.setState({
+          wod: wod.wod,
+          date: wod.date
+        })
+    });
+  }
 
   componentDidMount() {
     io.emit("readWod");
@@ -40,15 +50,6 @@ class WodScreen extends React.Component {
           date: wod.date
         })
     });
-    // fetch('http://192.168.0.19:3000/wod/read')
-    //   .then(response => response.json())
-    //   .then(data => {
-    //     this.setState({
-    //       wod: data.wod.wod,
-    //       date: data.wod.date
-    //     })
-    //   })
-    //   .catch(error => console.log('Request failed', error));
   }
 
   render() {
@@ -87,10 +88,6 @@ function mapStateToProps(state) {
   return {
     wod: state.wodData
   };
-  this.setState({
-    wod: this.props.wod.wod,
-    date: this.props.wod.date
-  })
 }
 
 export default connect(
