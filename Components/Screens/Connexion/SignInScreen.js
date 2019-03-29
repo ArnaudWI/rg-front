@@ -1,4 +1,6 @@
 import React from 'react';
+// import de l'adresse IP du backend
+import ipAddress from '../../Network/network';
 //import bibliothèque react native
 import {
   ImageBackground,
@@ -27,7 +29,7 @@ export default class SignInScreen extends React.Component {
     };
 
     handleSubmit = () => {
-      fetch('http://192.168.0.19:3000/signup', {
+      fetch('http://'+ipAddress+':3000/signup', {
         method: 'POST',
         headers: {'Content-Type': 'application/x-www-form-urlencoded'},
         body: 'firstName='+this.state.firstName+'&lastName='+this.state.lastName+'&email='+this.state.email+'&password='+this.state.password

@@ -1,4 +1,6 @@
 import React from 'react';
+// import de l'adresse IP du backend
+import ipAddress from '../../Network/network';
 //import bibliothèque react native
 import {
   ImageBackground,
@@ -25,7 +27,7 @@ export default class SignUpScreen extends React.Component {
   };
 
   handleSubmit = (text) => {
-    fetch(`http://192.168.0.19:3000/signin?email=${this.state.email}&password=${this.state.password}`)
+    fetch(`http://${ipAddress}:3000/signin?email=${this.state.email}&password=${this.state.password}`)
     .then(response => response.json())
     .then(data => {
       console.log(data)

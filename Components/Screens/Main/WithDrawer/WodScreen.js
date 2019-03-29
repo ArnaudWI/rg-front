@@ -1,4 +1,6 @@
 import React from 'react';
+// import de l'adresse IP du backend
+import ipAddress from '../../../Network/network';
 //import bibliothèque react native
 import {StyleSheet, ScrollView} from 'react-native';
 //import bibliothèque native base
@@ -15,7 +17,7 @@ import TitleComposant from '../../../Composants/TitleComposant';
 // import des sockets côté front
 import socketIOClient from "socket.io-client";
 // connection avec le backend sur l'ip spécifiée ci-dessous
-const io = socketIOClient('http://192.168.0.19:3000/');
+const io = socketIOClient('http://'+ipAddress+':3000/');
 // import de redux
 import {connect} from 'react-redux';
 
