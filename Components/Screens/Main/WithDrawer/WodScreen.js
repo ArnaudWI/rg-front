@@ -33,20 +33,17 @@ class WodScreen extends React.Component {
     date: ''
   };
 
-  constructor() {
-    super();
-
-    io.on('wodReaded', wod => {
-        this.setState({
-          wod: wod.wod,
-          date: wod.date
-        })
-    });
-  }
-
   componentDidMount() {
-    io.emit("readWod");
-    io.on('wodReaded', wod => {
+    fetch(`http://${ipAddress}:3000/wod/read`)
+    .then(response => response.json())
+    .then(data =>
+      this.setState({
+        wod: data.wod,
+        date: data.date
+      })
+    ).catch(error => console.error(error));
+    //lors de la maj de la datat par l'admin
+    io.on('wodUpdated', wod => {
         this.setState({
           wod: wod.wod,
           date: wod.date

@@ -29,7 +29,6 @@ class ModifyWodScreen extends React.Component {
     wod: ''
   };
 
-
   handleSubmit = () => {
     let today = new Date()
     let dd = today.getDate();
@@ -46,8 +45,7 @@ class ModifyWodScreen extends React.Component {
     text: "Wod modifié !",
     type: "success"
     })
-    io.emit("updateWod", this.state.wod , date, "wod");
-    io.emit("readWod");
+    io.emit("updateWod", {wod:this.state.wod , date});
     this.props.handleWod(this.state.wod, date);
     this.props.navigation.navigate('Wod de la semaine');
   };
