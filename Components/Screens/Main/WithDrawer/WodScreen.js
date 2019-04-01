@@ -14,10 +14,8 @@ import {
 // import des composants JS
 import HeaderMenuComposant from '../../../Composants/HeaderMenuComposant';
 import TitleComposant from '../../../Composants/TitleComposant';
-// import des sockets côté front
-import socketIOClient from "socket.io-client";
-// connection avec le backend sur l'ip spécifiée ci-dessous
-const io = socketIOClient('http://'+ipAddress+':3000/');
+// import du socket
+import io from '../../../Sockets/sockets';
 // import de redux
 import {connect} from 'react-redux';
 

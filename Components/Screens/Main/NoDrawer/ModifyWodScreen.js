@@ -16,10 +16,8 @@ import {
 } from 'native-base';
 // import des composants JS
 import HeaderBackComposant from '../../../Composants/HeaderBackComposant';
-// import des sockets côté front
-import socketIOClient from "socket.io-client";
-// connection avec le backend sur l'ip spécifiée ci-dessous
-const io = socketIOClient('http://'+ipAddress+':3000/');
+// import du socket
+import io from '../../../Sockets/sockets';
 // import de redux
 import {connect} from 'react-redux';
 
