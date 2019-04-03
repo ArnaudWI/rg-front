@@ -11,7 +11,7 @@ import {
 } from 'native-base';
 // import des composants JS
 import HeaderMenuComposant from '../../../Composants/HeaderMenuComposant';
-
+import AnnonceComposant from '../../../Composants/AnnonceComposant';
 
 export default class AccueilScreen extends React.Component {
   static navigationOptions = {
@@ -27,6 +27,8 @@ export default class AccueilScreen extends React.Component {
             <Button style={styles.bouton} onPress={ ()=> this.props.navigation.navigate('AddAnnonce')}>
               <Text style={styles.textBouton}>Ajouter une annonce</Text>
             </Button>
+
+            <AnnonceComposant title="Patrick absente" annonce="Patrick sera absente le 12 pour le cours de MMA à 17h. Le cours est reporté au 13 à 18h. Merci de votre compréhension" date="Ajouté le 11/04 à 12h"/>
           </ScrollView>
       </Container>
     );
