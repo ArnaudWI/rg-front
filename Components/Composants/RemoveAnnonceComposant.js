@@ -5,6 +5,15 @@ import {StyleSheet } from 'react-native';
 import { Grid, Col, View, Text, Icon } from "native-base";
 
 export default class RemoveAnnonceComposant extends React.Component {
+
+  removeYes = () => {
+    console.log('click Yes')
+  }
+
+  removeNo = () => {
+    console.log('click No')
+  }
+
   render() {
     return (
       <View style={this.props.removeStyle}>
@@ -14,10 +23,10 @@ export default class RemoveAnnonceComposant extends React.Component {
         </Grid>
 
         <Grid style={styles.gridRemoveButton}>
-          <Col style={styles.colRemoveYesButton}>
+          <Col style={styles.colRemoveYesButton} onPress={this.removeYes}>
             <Text style={styles.textYes}>Oui</Text>
           </Col>
-          <Col style={styles.colRemoveNoButton}>
+          <Col style={styles.colRemoveNoButton} onPress={this.removeNo}>
             <Text style={styles.textNo}>Non</Text>
           </Col>
         </Grid>

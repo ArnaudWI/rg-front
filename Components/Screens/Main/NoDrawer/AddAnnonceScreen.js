@@ -13,16 +13,20 @@ import {
   Item,
   Picker,
   Label,
-  Input
+  Input,
+  Toast
 } from 'native-base';
 // import des composants JS
 import HeaderBackComposant from '../../../Composants/HeaderBackComposant';
+// import du socket
+import io from '../../../Sockets/sockets';
 
 export default class AddAnnonceScreen extends React.Component {
 
   state = {
     typeSelected: undefined,
-    annonceTitle: ''
+    annonceTitle: '',
+    annonceContent: ''
   };
 
   onTypeChange(value: string) {
@@ -30,6 +34,34 @@ export default class AddAnnonceScreen extends React.Component {
       typeSelected: value
     });
   }
+
+  handleSubmit = () => {
+    let today = new Date()
+    let dd = today.getDate();
+    let mm = today.getMonth() + 1;
+    let hh = today.getHours();
+    let min = today.getMinutes();
+    if (dd < 10) {
+      dd = '0' + dd;
+    }
+    if (mm < 10) {
+      mm = '0' + mm;
+    }
+    if (hh < 10) {
+      hh = '0' + hh;
+    }
+    if (min < 10) {
+      min = '0' + min;
+    }
+    today = dd + '/' + mm + " à " + hh + "h" + min;
+    let date = String(today)
+      Toast.show({
+    text: "Annonce ajoutée !",
+    type: "success"
+    })
+    io.emit("addAnnonce", {title: this.state.annonceTitle , content: this.state.annonceContent, type: this.state.typeSelected, date});
+    this.props.navigation.navigate('Accueil')
+  };
 
   render() {
     return (
@@ -63,21 +95,22 @@ export default class AddAnnonceScreen extends React.Component {
                   selectedValue={this.state.typeSelected}
                   onValueChange={this.onTypeChange.bind(this)}
                 >
-                  <Picker.Item label="Normale" value="key0" />
-                  <Picker.Item label="Evenement" value="key1" />
-                  <Picker.Item label="Alerte" value="key2" />
+                  <Picker.Item label="Normale" value="normale" />
+                  <Picker.Item label="Evenement" value="evenement" />
+                  <Picker.Item label="Alerte" value="alerte" />
                 </Picker>
               </Item>
 
               <Textarea
                 style={styles.textArea}
-                rowSpan={15}
+                rowSpan={10}
                 bordered
                 placeholder="Ajouter une Annonce ici"
+                onChangeText={text => this.setState({annonceContent: text})}
               />
             </Form>
 
-            <Button style={styles.bouton}  onPress={ ()=> this.props.navigation.navigate('Accueil')}>
+            <Button style={styles.bouton}  onPress={this.handleSubmit}>
               <Text style={styles.textBouton} >Valider mon Annonce</Text>
             </Button>
 

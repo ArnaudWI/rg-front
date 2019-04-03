@@ -55,7 +55,7 @@ export default class AnnonceComposant extends React.Component {
         </Grid>
 
         <Grid style={styles.gridDate}>
-          <Text style={styles.dateText}>{this.props.date}</Text>
+          <Text style={styles.dateText}>Ajouté le {this.props.date}</Text>
         </Grid>
         <RemoveAnnonceComposant removeStyle={removeStyle}/>
       </View>

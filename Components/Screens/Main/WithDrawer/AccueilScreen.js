@@ -12,6 +12,8 @@ import {
 // import des composants JS
 import HeaderMenuComposant from '../../../Composants/HeaderMenuComposant';
 import AnnonceComposant from '../../../Composants/AnnonceComposant';
+// import du socket
+import io from '../../../Sockets/sockets';
 
 export default class AccueilScreen extends React.Component {
   static navigationOptions = {
@@ -19,7 +21,41 @@ export default class AccueilScreen extends React.Component {
       <Icon active name="home" style={{fontSize: 17, color: tintColor}}/>
     )
   }
+
+  state = {
+    annonceList: []
+  }
+
+  componentDidMount() {
+    fetch(`http://${ipAddress}:3000/annonce`)
+    .then(response => response.json())
+    .then(data => {
+      this.setState({
+        annonceList: data,
+      })
+    }
+    ).catch(error => console.error(error));
+    io.on('annonceAdded', annonce => {
+      console.log(annonce)
+      this.setState({
+        annonceList: annonce,
+      })
+    });
+  }
+
   render() {
+
+    let annonceList = this.state.annonceList.map((annonce, i) =>
+        <AnnonceComposant
+        key={i}
+        id={annonce._id}
+        title={annonce.title}
+        annonce={annonce.content}
+        type={annonce.type}
+        date={annonce.date}
+        />
+      );
+
     return (
       <Container style={styles.container}>
         <HeaderMenuComposant title={'Ring Side - Dardilly'}/>
@@ -28,7 +64,7 @@ export default class AccueilScreen extends React.Component {
               <Text style={styles.textBouton}>Ajouter une annonce</Text>
             </Button>
 
-            <AnnonceComposant title="Patrick absente" annonce="Patrick sera absente le 12 pour le cours de MMA à 17h. Le cours est reporté au 13 à 18h. Merci de votre compréhension" date="Ajouté le 11/04 à 12h"/>
+            {annonceList.reverse()}
           </ScrollView>
       </Container>
     );
