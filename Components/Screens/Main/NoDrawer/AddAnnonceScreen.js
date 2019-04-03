@@ -12,7 +12,8 @@ import {
   Textarea,
   Item,
   Picker,
-  Label
+  Label,
+  Input
 } from 'native-base';
 // import des composants JS
 import HeaderBackComposant from '../../../Composants/HeaderBackComposant';
@@ -20,7 +21,8 @@ import HeaderBackComposant from '../../../Composants/HeaderBackComposant';
 export default class AddAnnonceScreen extends React.Component {
 
   state = {
-    typeSelected: undefined
+    typeSelected: undefined,
+    annonceTitle: ''
   };
 
   onTypeChange(value: string) {
@@ -37,7 +39,12 @@ export default class AddAnnonceScreen extends React.Component {
 
             <Form style={styles.form}>
 
-              <Item picker style={styles.picker}>
+              <Item stackedLabel style={styles.itemTitle}>
+                <Label style={styles.titleLabel} >Titre de l'annonce:</Label>
+                <Input style={styles.titleInput} onChangeText={(text) => this.setState({annonceTitle: text})}/>
+              </Item>
+
+              <Item picker style={styles.itemPicker}>
                 <Label style={styles.label}>Type d'annonce:</Label>
                 <Picker
                   modalStyle={{backgroundColor: '#373737'}}
@@ -61,6 +68,7 @@ export default class AddAnnonceScreen extends React.Component {
                   <Picker.Item label="Alerte" value="key2" />
                 </Picker>
               </Item>
+
               <Textarea
                 style={styles.textArea}
                 rowSpan={15}
@@ -110,13 +118,12 @@ const styles = StyleSheet.create({
   },
   form: {
     width: 320,
-    marginTop: 10
   },
   label: {
     fontWeight: 'bold',
     color: "#fff"
   },
-  picker: {
+  itemPicker: {
     borderColor: '#E52D2F',
     borderBottomWidth:2,
   },
@@ -124,4 +131,17 @@ const styles = StyleSheet.create({
     color: '#E52D2F',
     marginBottom: 5
   },
+  itemTitle: {
+    borderColor: '#E52D2F',
+    borderBottomWidth:2,
+    marginLeft: 0
+  },
+  titleLabel: {
+    color: '#FFF',
+    fontWeight: 'bold',
+    fontSize: 17,
+  },
+  titleInput: {
+    color: '#FFF',
+  }
 });
