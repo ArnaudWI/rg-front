@@ -6,12 +6,13 @@ import Navigation from './Components/Navigation/Navigation';
 
 // import de mes Reducers
 import wodData from './Components/Reducers/wod.reducer';
+import idAnnonce from './Components/Reducers/idannonce.reducer';
 // import de mes outils Redux
 import {Provider} from 'react-redux';
 import {createStore, combineReducers} from 'redux';
 
 // Création de mon Store
-const store = createStore(combineReducers({wodData}));
+const store = createStore(combineReducers({wodData, idAnnonce}));
 
 export default class App extends React.Component {
   render() {

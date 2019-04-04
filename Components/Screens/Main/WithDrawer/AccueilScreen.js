@@ -36,7 +36,11 @@ export default class AccueilScreen extends React.Component {
     }
     ).catch(error => console.error(error));
     io.on('annonceAdded', annonce => {
-      console.log(annonce)
+      this.setState({
+        annonceList: annonce,
+      })
+    });
+    io.on('annonceRemoved', annonce => {
       this.setState({
         annonceList: annonce,
       })
@@ -53,6 +57,7 @@ export default class AccueilScreen extends React.Component {
         annonce={annonce.content}
         type={annonce.type}
         date={annonce.date}
+        idAnnonce={annonce._id}
         />
       );
 

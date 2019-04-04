@@ -5,8 +5,10 @@ import {StyleSheet } from 'react-native';
 import { Grid, Col, View, Text, Icon } from "native-base";
 // import des composants JS
 import RemoveAnnonceComposant from './RemoveAnnonceComposant';
+// import de redux
+import {connect} from 'react-redux';
 
-export default class AnnonceComposant extends React.Component {
+class AnnonceComposant extends React.Component {
   state = {
     removeAnnonce: false,
   }
@@ -15,6 +17,7 @@ export default class AnnonceComposant extends React.Component {
     this.setState({
       removeAnnonce: !this.state.removeAnnonce
     });
+    this.props.handleIdAnnonce(this.props.idAnnonce);
   }
 
   render() {
@@ -29,6 +32,8 @@ export default class AnnonceComposant extends React.Component {
     if (!this.state.removeAnnonce) {
       removeStyle.display = 'none';
     }
+
+
 
     return (
       <View style={styles.view}>
@@ -57,13 +62,27 @@ export default class AnnonceComposant extends React.Component {
         <Grid style={styles.gridDate}>
           <Text style={styles.dateText}>Ajouté le {this.props.date}</Text>
         </Grid>
-        <RemoveAnnonceComposant removeStyle={removeStyle}/>
+        <RemoveAnnonceComposant removeStyle={removeStyle} idAnnonce={this.props.idAnnonce}/>
       </View>
     );
   }
 }
 
+function mapDispatchToProps(dispatch) {
+ return {
+  handleIdAnnonce: function(id) {
+    dispatch({
+      type: 'idAnnonce',
+      id: id
+    })
+  }
+ }
+}
 
+export default connect(
+  null,
+  mapDispatchToProps
+)(AnnonceComposant);
 
 const styles = StyleSheet.create({
   view: {

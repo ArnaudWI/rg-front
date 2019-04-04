@@ -3,11 +3,15 @@ import React from 'react';
 import {StyleSheet } from 'react-native';
 //import bibliothèque native base
 import { Grid, Col, View, Text, Icon } from "native-base";
+// import de redux
+import {connect} from 'react-redux';
+// import du socket
+import io from '../Sockets/sockets';
 
-export default class RemoveAnnonceComposant extends React.Component {
+class RemoveAnnonceComposant extends React.Component {
 
   removeYes = () => {
-    console.log('click Yes')
+    io.emit("removeAnnonce", this.props.idAnnonce.id);
   }
 
   removeNo = () => {
@@ -23,7 +27,7 @@ export default class RemoveAnnonceComposant extends React.Component {
         </Grid>
 
         <Grid style={styles.gridRemoveButton}>
-          <Col style={styles.colRemoveYesButton} onPress={this.removeYes}>
+          <Col style={styles.colRemoveYesButton} onPress={this.removeYes} >
             <Text style={styles.textYes}>Oui</Text>
           </Col>
           <Col style={styles.colRemoveNoButton} onPress={this.removeNo}>
@@ -35,6 +39,17 @@ export default class RemoveAnnonceComposant extends React.Component {
     );
   }
 }
+
+function mapStateToProps(state) {
+  return {
+    idAnnonce: state.idAnnonce
+  };
+}
+
+export default connect(
+  mapStateToProps,
+  null
+)(RemoveAnnonceComposant);
 
 const styles = StyleSheet.create({
   gridRemoveQuestion: {
