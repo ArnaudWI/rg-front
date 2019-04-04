@@ -11,7 +11,7 @@ import io from '../Sockets/sockets';
 class RemoveAnnonceComposant extends React.Component {
 
   removeYes = () => {
-    io.emit("removeAnnonce", this.props.idAnnonce.id);
+    io.emit("removeAnnonce", this.props.removeAnnonce.id);
   }
 
   removeNo = () => {
@@ -42,7 +42,7 @@ class RemoveAnnonceComposant extends React.Component {
 
 function mapStateToProps(state) {
   return {
-    idAnnonce: state.idAnnonce
+    removeAnnonce: state.removeAnnonce
   };
 }
 

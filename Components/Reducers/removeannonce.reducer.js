@@ -1,5 +1,5 @@
 export default function (id = {}, action) {
-  if(action.type === 'idAnnonce') {
+  if(action.type === 'removeAnnonce') {
     let idCopy = {
       ...id,
       id: action.id,

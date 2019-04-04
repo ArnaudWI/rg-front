@@ -7,6 +7,8 @@ import { Grid, Col, View, Text, Icon } from "native-base";
 import RemoveAnnonceComposant from './RemoveAnnonceComposant';
 // import de redux
 import {connect} from 'react-redux';
+// import de mes éléments React Navigation
+import { withNavigation } from 'react-navigation';
 
 class AnnonceComposant extends React.Component {
   state = {
@@ -17,7 +19,12 @@ class AnnonceComposant extends React.Component {
     this.setState({
       removeAnnonce: !this.state.removeAnnonce
     });
-    this.props.handleIdAnnonce(this.props.idAnnonce);
+    this.props.handleRemoveAnnonce(this.props.id);
+  }
+
+  handleUpdate = () => {
+    this.props.handleUpdateAnnonce(this.props.id, this.props.type, this.props.annonce, this.props.title, this.props.date);
+    this.props.navigation.navigate('AddAnnonce');
   }
 
   render() {
@@ -39,7 +46,7 @@ class AnnonceComposant extends React.Component {
       <View style={styles.view}>
 
         <Grid style={styles.gridTitle}>
-          <Col style={styles.colTitleIcon}>
+          <Col style={styles.colTitleIcon} onPress={this.handleUpdate}>
             <Icon name="refresh" style={styles.iconAdmin}/>
           </Col>
           <Col style={styles.colTitleText}>
@@ -60,9 +67,9 @@ class AnnonceComposant extends React.Component {
         </Grid>
 
         <Grid style={styles.gridDate}>
-          <Text style={styles.dateText}>Ajouté le {this.props.date}</Text>
+          <Text style={styles.dateText}>{this.props.date}</Text>
         </Grid>
-        <RemoveAnnonceComposant removeStyle={removeStyle} idAnnonce={this.props.idAnnonce}/>
+        <RemoveAnnonceComposant removeStyle={removeStyle}/>
       </View>
     );
   }
@@ -70,19 +77,29 @@ class AnnonceComposant extends React.Component {
 
 function mapDispatchToProps(dispatch) {
  return {
-  handleIdAnnonce: function(id) {
+  handleRemoveAnnonce: function(id) {
     dispatch({
-      type: 'idAnnonce',
+      type: 'removeAnnonce',
       id: id
+    })
+  },
+  handleUpdateAnnonce: function(id, type, content, title, date) {
+    dispatch({
+      type: 'updateAnnonce',
+      id: id,
+      typeAnnonce: type,
+      content: content,
+      title: title
     })
   }
  }
 }
 
-export default connect(
+export default withNavigation(connect(
   null,
   mapDispatchToProps
-)(AnnonceComposant);
+)(AnnonceComposant));
+
 
 const styles = StyleSheet.create({
   view: {

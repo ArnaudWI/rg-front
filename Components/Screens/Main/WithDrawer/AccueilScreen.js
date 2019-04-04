@@ -14,8 +14,10 @@ import HeaderMenuComposant from '../../../Composants/HeaderMenuComposant';
 import AnnonceComposant from '../../../Composants/AnnonceComposant';
 // import du socket
 import io from '../../../Sockets/sockets';
+// import de redux
+import {connect} from 'react-redux';
 
-export default class AccueilScreen extends React.Component {
+class AccueilScreen extends React.Component {
   static navigationOptions = {
     drawerIcon: ({ tintColor }) => (
       <Icon active name="home" style={{fontSize: 17, color: tintColor}}/>
@@ -45,6 +47,16 @@ export default class AccueilScreen extends React.Component {
         annonceList: annonce,
       })
     });
+    io.on('annonceUpdated', annonce => {
+      this.setState({
+        annonceList: annonce,
+      })
+    });
+  }
+
+  addAnnonce = () => {
+    this.props.handleAddAnnonce();
+    this.props.navigation.navigate('AddAnnonce');
   }
 
   render() {
@@ -57,7 +69,6 @@ export default class AccueilScreen extends React.Component {
         annonce={annonce.content}
         type={annonce.type}
         date={annonce.date}
-        idAnnonce={annonce._id}
         />
       );
 
@@ -65,7 +76,7 @@ export default class AccueilScreen extends React.Component {
       <Container style={styles.container}>
         <HeaderMenuComposant title={'Ring Side - Dardilly'}/>
           <ScrollView style={{flex: 1, alignSelf: 'center'}}>
-            <Button style={styles.bouton} onPress={ ()=> this.props.navigation.navigate('AddAnnonce')}>
+            <Button style={styles.bouton} onPress={this.addAnnonce}>
               <Text style={styles.textBouton}>Ajouter une annonce</Text>
             </Button>
 
@@ -75,6 +86,25 @@ export default class AccueilScreen extends React.Component {
     );
   }
 }
+
+function mapDispatchToProps(dispatch) {
+ return {
+  handleAddAnnonce: function() {
+    dispatch({
+      type: 'updateAnnonce',
+      id: undefined,
+      typeAnnonce: '',
+      content: '',
+      title: ''
+    })
+  }
+ }
+}
+
+export default connect(
+  null,
+  mapDispatchToProps
+)(AccueilScreen);
 
 const styles = StyleSheet.create({
   container: {
