@@ -62,7 +62,9 @@ class AnnonceComposant extends React.Component {
             <Text style={styles.contentAnnonce}>{this.props.annonce}</Text>
           </Col>
           <Col style={styles.colContentIcon}>
-            <Icon name="calendar" style={styles.iconContent}/>
+          {this.props.type === 'evenement' ? <Icon type="Ionicons" name="calendar" style={styles.iconContent}/>
+            : this.props.type === 'alerte' ? <Icon type="Ionicons" name="warning" style={styles.iconContent}/>
+            : <Icon type="Ionicons" name="megaphone" style={styles.iconContent}/>}        
           </Col>
         </Grid>
 

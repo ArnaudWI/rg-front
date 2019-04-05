@@ -14,9 +14,6 @@ class RemoveAnnonceComposant extends React.Component {
     io.emit("removeAnnonce", this.props.removeAnnonce.id);
   }
 
-  removeNo = () => {
-    console.log('click No')
-  }
 
   render() {
     return (
@@ -29,9 +26,6 @@ class RemoveAnnonceComposant extends React.Component {
         <Grid style={styles.gridRemoveButton}>
           <Col style={styles.colRemoveYesButton} onPress={this.removeYes} >
             <Text style={styles.textYes}>Oui</Text>
-          </Col>
-          <Col style={styles.colRemoveNoButton} onPress={this.removeNo}>
-            <Text style={styles.textNo}>Non</Text>
           </Col>
         </Grid>
 
@@ -70,16 +64,8 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     backgroundColor: '#4a802a'
   },
-  colRemoveNoButton: {
-    justifyContent: 'center',
-    backgroundColor: 'red'
-  },
   textYes: {
     color: '#fff',
     textAlign: 'center'
-  },
-  textNo: {
-    color: '#FFF',
-    alignSelf: 'center'
   },
 });

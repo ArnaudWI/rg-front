@@ -69,7 +69,7 @@ class AddAnnonceScreen extends React.Component {
       if (min < 10) {
         min = '0' + min;
       }
-      today = 'Ajouté le' + dd + '/' + mm + " à " + hh + "h" + min;
+      today = 'Ajouté le ' + dd + '/' + mm + " à " + hh + "h" + min;
       let date = String(today)
         Toast.show({
       text: "Annonce ajoutée !",
