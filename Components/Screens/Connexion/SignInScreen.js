@@ -17,9 +17,10 @@ import {
   Input,
   Label
 } from 'native-base';
+// import de redux
+import {connect} from 'react-redux';
 
-
-export default class SignInScreen extends React.Component {
+class SignInScreen extends React.Component {
 
     state = {
       firstName: '',
@@ -37,7 +38,7 @@ export default class SignInScreen extends React.Component {
       .then(response => response.json())
       .then(data => {
         if (data.user) {
-          console.log(data.user)
+          this.props.handleUserValid(data.user.lastName,data.user.firstName,data.user.email)
           this.props.navigation.navigate('Accueil');
         } else {
           console.log('erreur de log')
@@ -81,6 +82,24 @@ export default class SignInScreen extends React.Component {
     );
   }
 }
+
+function mapDispatchToProps(dispatch) {
+  return {
+    handleUserValid: function(nameUser, firstNameUser, emailUser) {
+      dispatch({
+        type: 'setUserData',
+        name: nameUser,
+        firstName: firstNameUser,
+        email: emailUser
+      });
+    },
+  }
+};
+
+export default connect(
+  null,
+  mapDispatchToProps
+)(SignInScreen);
 
 
 const styles = StyleSheet.create({

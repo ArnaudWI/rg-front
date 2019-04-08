@@ -18,9 +18,10 @@ import {
   Label,
   Toast
 } from 'native-base';
+// import de redux
+import {connect} from 'react-redux';
 
-
-export default class SignUpScreen extends React.Component {
+class SignUpScreen extends React.Component {
   state = {
     email: '',
     password: ''
@@ -30,8 +31,8 @@ export default class SignUpScreen extends React.Component {
     fetch(`http://${ipAddress}:3000/signin?email=${this.state.email}&password=${this.state.password}`)
     .then(response => response.json())
     .then(data => {
-      console.log(data)
       if (data.isUserExist) {
+        this.props.handleUserValid(data.user.lastName,data.user.firstName,data.user.email)
         this.props.navigation.navigate('Accueil');
       } else {
         Toast.show({
@@ -62,7 +63,7 @@ export default class SignUpScreen extends React.Component {
           </Item>
         </Form>
 
-        <Button style={styles.bouton} onPress={() => this.props.navigation.navigate('Accueil')}>
+        <Button style={styles.bouton} onPress={this.handleSubmit}>
           <Text style={styles.textBouton}>Connexion</Text>
         </Button>
 
@@ -72,6 +73,23 @@ export default class SignUpScreen extends React.Component {
   }
 }
 
+function mapDispatchToProps(dispatch) {
+  return {
+    handleUserValid: function(nameUser, firstNameUser, emailUser) {
+      dispatch({
+        type: 'setUserData',
+        name: nameUser,
+        firstName: firstNameUser,
+        email: emailUser
+      });
+    },
+  }
+};
+
+export default connect(
+  null,
+  mapDispatchToProps
+)(SignUpScreen);
 
 const styles = StyleSheet.create({
   view: {

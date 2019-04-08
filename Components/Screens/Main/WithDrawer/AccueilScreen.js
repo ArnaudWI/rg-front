@@ -60,6 +60,7 @@ class AccueilScreen extends React.Component {
   }
 
   render() {
+        console.log(this.props.user)
 
     let annonceList = this.state.annonceList.map((annonce, i) =>
         <AnnonceComposant
@@ -101,8 +102,14 @@ function mapDispatchToProps(dispatch) {
  }
 }
 
+function mapStateToProps(state) {
+  return {
+    user: state.userData,
+  };
+}
+
 export default connect(
-  null,
+  mapStateToProps,
   mapDispatchToProps
 )(AccueilScreen);
 
