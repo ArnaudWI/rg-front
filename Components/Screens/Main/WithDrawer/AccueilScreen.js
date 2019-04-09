@@ -1,4 +1,6 @@
 import React from 'react';
+// import notification élément d'expo
+import { Permissions, Notifications } from 'expo';
 //import bibliothèque react native
 import {StyleSheet, ScrollView} from 'react-native';
 //import bibliothèque native base
@@ -28,7 +30,43 @@ class AccueilScreen extends React.Component {
     annonceList: []
   }
 
+  registerForPushNotificationsAsync = async() => {
+    console.log('1')
+  const { status: existingStatus } = await Permissions.getAsync(Permissions.NOTIFICATIONS);
+  let finalStatus = existingStatus;
+    console.log('2')
+  // only ask if permissions have not already been determined, because
+  // iOS won't necessarily prompt the user a second time.
+  if (existingStatus !== 'granted') {
+    console.log('if existingStatus')
+    // Android remote notification permissions are granted during the app
+    // install, so this will only ask on iOS
+    const { status } = await Permissions.askAsync(Permissions.NOTIFICATIONS);
+    finalStatus = status;
+  }
+    console.log('before return')
+  // Stop here if the user did not grant permissions
+  if (finalStatus !== 'granted') { return; }
+    console.log('before token')
+    // Get the token that uniquely identifies this device
+    let token = await Notifications.getExpoPushTokenAsync();
+    // POST the token to your backend server from where you can retrieve it to send push notifications.
+    console.log('before fetch')
+   fetch(`http://${ipAddress}:3000/token`, {
+      method: 'PUT',
+      headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+      body: '_id='+this.props.user.id+'&token='+token
+    })
+    .then(response => response.json())
+    .then(data => {
+      if (data) {
+        console.log(data)
+      }
+    }).catch(error => console.error(error));
+}
+
   componentDidMount() {
+    this.registerForPushNotificationsAsync();
     fetch(`http://${ipAddress}:3000/annonce`)
     .then(response => response.json())
     .then(data => {
@@ -60,7 +98,6 @@ class AccueilScreen extends React.Component {
   }
 
   render() {
-        console.log(this.props.user)
 
     let annonceList = this.state.annonceList.map((annonce, i) =>
         <AnnonceComposant

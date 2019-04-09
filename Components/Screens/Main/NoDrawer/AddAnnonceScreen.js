@@ -22,6 +22,8 @@ import HeaderBackComposant from '../../../Composants/HeaderBackComposant';
 import io from '../../../Sockets/sockets';
 // import de redux
 import {connect} from 'react-redux';
+// import notification élément d'expo
+import { Permissions, Notifications } from 'expo';
 
 class AddAnnonceScreen extends React.Component {
 
@@ -104,6 +106,34 @@ class AddAnnonceScreen extends React.Component {
       io.emit("updateAnnonce", {title: this.state.annonceTitle , content: this.state.annonceContent, type: this.state.typeSelected, date, id: this.state.id});
       this.props.navigation.navigate('Accueil')
     }
+    fetch(`http://${ipAddress}:3000/userbeforenotification`)
+    .then(response => response.json())
+    .then(data => {
+      let tokenList = [];
+      //boucle pour capturer tous les tokens des users (meme les undefined)
+      for (let i = 0; i < data.length; i++) {
+          tokenList.push(data[i].token)
+      }
+      // filtre pour obtenir seulement les user qui ont accepté les notifications
+      let letTokenListFilter = tokenList.filter(token => token != 'undefined')
+      console.log(letTokenListFilter, 'variable')
+      // création de la boucle pour envoyer une notification à chaque user
+      for (let y = 0; y < letTokenListFilter.length; y++) {
+        let response = fetch('https://exp.host/--/api/v2/push/send', {
+          method: 'POST',
+          header: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            to: letTokenListFilter[y],
+            sound: 'default',
+            title: this.state.annonceTitle,
+            body: this.state.annonceContent
+          })
+        })
+      }
+    }).catch(error => console.error(error));
   };
 
   render() {

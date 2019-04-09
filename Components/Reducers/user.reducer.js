@@ -4,7 +4,8 @@ export default function (user = {}, action) {
       ...user,
       name: action.name,
       firstName: action.firstName,
-      email: action.email
+      email: action.email,
+      id: action.id
     }
     return userCopy;
   } else {

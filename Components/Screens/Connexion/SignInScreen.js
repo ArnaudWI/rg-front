@@ -38,7 +38,7 @@ class SignInScreen extends React.Component {
       .then(response => response.json())
       .then(data => {
         if (data.user) {
-          this.props.handleUserValid(data.user.lastName,data.user.firstName,data.user.email)
+          this.props.handleUserValid(data.user.lastName,data.user.firstName,data.user.email, data.user._id)
           this.props.navigation.navigate('Accueil');
         } else {
           console.log('erreur de log')
@@ -85,12 +85,13 @@ class SignInScreen extends React.Component {
 
 function mapDispatchToProps(dispatch) {
   return {
-    handleUserValid: function(nameUser, firstNameUser, emailUser) {
+    handleUserValid: function(nameUser, firstNameUser, emailUser, idUser) {
       dispatch({
         type: 'setUserData',
         name: nameUser,
         firstName: firstNameUser,
-        email: emailUser
+        email: emailUser,
+        id: idUser
       });
     },
   }
