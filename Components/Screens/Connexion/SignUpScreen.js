@@ -64,7 +64,7 @@ class SignUpScreen extends React.Component {
           </Item>
         </Form>
 
-        <Button style={styles.bouton} onPress={this.handleSubmit}>
+        <Button style={styles.bouton} onPress={() => {this.props.navigation.navigate('Small Group')}}>
           <Text style={styles.textBouton}>Connexion</Text>
         </Button>
 

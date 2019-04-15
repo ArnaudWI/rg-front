@@ -43,7 +43,6 @@ class AddAnnonceScreen extends React.Component {
         id: this.props.updateAnnonce.id
       });
     }
-
   }
 
   onTypeChange(value: string) {
