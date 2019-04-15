@@ -5,7 +5,8 @@ import ipAddress from '../../Network/network';
 import {
   ImageBackground,
   StyleSheet,
-  Image
+  Image,
+  ScrollView
 } from 'react-native';
 //import bibliothèque native base
 import {
@@ -48,7 +49,7 @@ class SignUpScreen extends React.Component {
     return (
       <ImageBackground style={{flex:1}} source={require("../../../public/images/img-bg.jpg")}>
 
-      <View style={styles.view}>
+      <ScrollView style={styles.view}>
 
         <Image source={require('../../../public/logo/logo-rg.png')} style={styles.logo}/>
 
@@ -67,7 +68,7 @@ class SignUpScreen extends React.Component {
           <Text style={styles.textBouton}>Connexion</Text>
         </Button>
 
-      </View>
+      </ScrollView>
       </ImageBackground>
     );
   }

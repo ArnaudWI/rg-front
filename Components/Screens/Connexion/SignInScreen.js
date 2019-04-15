@@ -5,7 +5,8 @@ import ipAddress from '../../Network/network';
 import {
   ImageBackground,
   StyleSheet,
-  Image
+  Image,
+  ScrollView
 } from 'react-native';
 //import bibliothèque native base
 import {
@@ -15,7 +16,8 @@ import {
   Form,
   Item,
   Input,
-  Label
+  Label,
+  Toast
 } from 'native-base';
 // import de redux
 import {connect} from 'react-redux';
@@ -26,50 +28,63 @@ class SignInScreen extends React.Component {
       firstName: '',
       lastName: '',
       email: '',
-      password: ''
+      password: '',
+      code: ''
     };
 
     handleSubmit = () => {
-      fetch('http://'+ipAddress+':3000/signup', {
-        method: 'POST',
-        headers: {'Content-Type': 'application/x-www-form-urlencoded'},
-        body: 'firstName='+this.state.firstName+'&lastName='+this.state.lastName+'&email='+this.state.email+'&password='+this.state.password
-      })
-      .then(response => response.json())
-      .then(data => {
-        if (data.user) {
-          this.props.handleUserValid(data.user.lastName,data.user.firstName,data.user.email, data.user._id)
-          this.props.navigation.navigate('Accueil');
-        } else {
-          console.log('erreur de log')
-        }
-      })
-      .catch(error => console.error(error))
+      if (this.state.code === '1' || this.state.code === '2') {
+        fetch('http://'+ipAddress+':3000/signup', {
+          method: 'POST',
+          headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+          body: 'firstName='+this.state.firstName+'&lastName='+this.state.lastName+'&email='+this.state.email+'&password='+this.state.password+'&admin='+this.state.code
+        })
+        .then(response => response.json())
+        .then(data => {
+          if (data.user) {
+            this.props.handleUserValid(data.user.lastName,data.user.firstName,data.user.email, data.user._id)
+            this.props.navigation.navigate('Accueil');
+          } else {
+            console.log('erreur de log')
+          }
+        })
+        .catch(error => console.error(error))
+      } else {
+        Toast.show({
+          text: "Code Incorrect, veuillez vous renseigner à l'accueil de votre salle Ring Side",
+          position: "top",
+          duration: 3000
+        })
+      }
     };
 
   render() {
     return (
       <ImageBackground style={{flex:1}} source={require("../../../public/images/img-bg.jpg")}>
-      <View style={styles.view}>
+      <ScrollView style={styles.view}>
 
       <Image source={require('../../../public/logo/logo-rg.png')} style={styles.logo}/>
 
           <Form style={styles.form}>
-            <Item floatingLabel style={styles.item}>
+            <Item stackedLabel  style={styles.item}>
               <Label style={styles.label} >Prénom</Label>
-              <Input style={styles.input} onChangeText={(text) => this.setState({firstName: text})}/>
+              <Input style={styles.input} placeholder='Indiquez votre prénom' onChangeText={(text) => this.setState({firstName: text})}/>
             </Item>
-            <Item floatingLabel style={styles.item}>
+            <Item stackedLabel  style={styles.item}>
               <Label style={styles.label} >Nom</Label>
-              <Input style={styles.input} onChangeText={(text) => this.setState({lastName: text})}/>
+              <Input style={styles.input} placeholder='Indiquez votre nom' onChangeText={(text) => this.setState({lastName: text})}/>
             </Item>
-            <Item floatingLabel style={styles.item}>
+            <Item stackedLabel  style={styles.item}>
               <Label style={styles.label} >Email</Label>
-              <Input style={styles.input} onChangeText={(text) => this.setState({email: text})}/>
+              <Input style={styles.input} placeholder="Indiquez votre e-mail" onChangeText={(text) => this.setState({email: text})}/>
             </Item>
-            <Item floatingLabel style={styles.item}>
+            <Item stackedLabel style={styles.item}>
               <Label style={styles.label} >Mot de passe</Label>
-              <Input style={styles.input} onChangeText={(text) => this.setState({password: text})}/>
+              <Input style={styles.input} placeholder="Choisissez votre mot de passe" onChangeText={(text) => this.setState({password: text})}/>
+            </Item>
+            <Item stackedLabel  style={styles.item}>
+              <Label style={styles.label} >Code Ring Side :</Label>
+              <Input style={styles.input} placeholder="Code à obtenir à l'accueil" onChangeText={(text) => this.setState({code: text})}/>
             </Item>
           </Form>
 
@@ -77,7 +92,7 @@ class SignInScreen extends React.Component {
             <Text style={styles.textBouton}>Valider mon inscription</Text>
           </Button>
 
-      </View>
+      </ScrollView>
       </ImageBackground>
     );
   }
@@ -106,11 +121,11 @@ export default connect(
 const styles = StyleSheet.create({
   view: {
     flex: 1,
-    alignSelf: 'center',
+    alignSelf: 'center'
   },
   logo: {
-    height: 225,
-    width: 225,
+    height: 125,
+    width: 125,
     marginTop: 50,
     alignSelf: 'center'
   },
