@@ -17,7 +17,7 @@ export default class HomeScreen extends React.Component {
   render() {
     return (
 
-      <ImageBackground style={{flex:1}} source={require("../../../public/images/img-bg.jpg")}>
+      <ImageBackground style={{flex:1}} source={require("../../../public/images/ringside-gant.jpg")}>
       <View style={styles.view}>
 
       <Image source={require('../../../public/logo/logo-rg.png')} style={styles.logo}/>
