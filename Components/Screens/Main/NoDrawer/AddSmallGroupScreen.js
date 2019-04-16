@@ -168,18 +168,6 @@ const styles = StyleSheet.create({
   form: {
     width: 320,
   },
-  label: {
-    fontWeight: 'bold',
-    color: "#fff"
-  },
-  itemPicker: {
-    borderColor: '#E52D2F',
-    borderBottomWidth:2,
-  },
-  icon: {
-    color: '#E52D2F',
-    marginBottom: 5
-  },
   itemTitle: {
     borderColor: '#E52D2F',
     borderBottomWidth:2,

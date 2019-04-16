@@ -17,6 +17,9 @@ import {
 import HeaderBackComposant from '../../../Composants/HeaderBackComposant';
 import TitleComposant from '../../../Composants/TitleComposant';
 import ParticipantsListingComposant from '../../../Composants/ParticipantsListingComposant';
+import OrgaSmallGroupDetailsComposant from '../../../Composants/OrgaSmallGroupDetailsComposant';
+import NbrParticipantsIndicationComposant from '../../../Composants/NbrParticipantsIndicationComposant';
+
 
 export default class SmallGroupDetailsScreen extends React.Component {
 
@@ -84,50 +87,9 @@ export default class SmallGroupDetailsScreen extends React.Component {
           <ScrollView style={{flex: 1, alignSelf: 'center'}}>
             <TitleComposant title={'Organisation'}/>
 
-            <View style={styles.viewOrga}>
-              <Grid style={styles.gridOrga}>
-                <Col style={styles.colOrgaIcon}>
-                  <Icon name="calendar" style={styles.iconBouton}/>
-                </Col>
-                <Col style={styles.colOrgaText}>
-                  <Text style={styles.textDate} >Date : 10/10/2019</Text>
-                </Col>
-              </Grid>
-              <Grid style={styles.gridOrga}>
-                <Col style={styles.colOrgaIcon}>
-                  <Icon name="clock" style={styles.iconBouton}/>
-                </Col>
-                <Col style={styles.colOrgaText}>
-                  <Text style={styles.textHeure} >Heure : 19h00</Text>
-                </Col>
-              </Grid>
-              <Grid style={styles.gridOrga}>
-                <Col style={styles.colOrgaIcon}>
-                  <Icon name="logo-euro" style={styles.iconBouton}/>
-                </Col>
-                <Col style={styles.colOrgaText}>
-                  <Text style={styles.textPrix} >Prix : 10 €</Text>
-                </Col>
-              </Grid>
-            </View>
+            <OrgaSmallGroupDetailsComposant date={'10/10/2019'} hour={'19h00'} price={'10'}/>
 
-            <View style={styles.viewParticipants}>
-              <Grid style={styles.gridParticipants}>
-                <Col style={styles.colParticipantsText}>
-                  <Text style={styles.textParticipants} >
-                    Nombre de participants minimum : 5
-                  </Text>
-                </Col>
-                <Col style={styles.colParticipantsIcon}>
-                  <Icon name="people" style={styles.iconBouton}/>
-                </Col>
-              </Grid>
-                <Grid>
-                  <View
-                    style={styles.tiret}
-                  />
-                </Grid>
-            </View>
+            <NbrParticipantsIndicationComposant nbrParticipantsMinimum={'5'}/>
 
             <TitleComposant title={'Programme'}/>
 
@@ -167,52 +129,6 @@ const styles = StyleSheet.create({
   container: {
     backgroundColor: '#373737'
   },
-  viewOrga: {
-    backgroundColor: 'black',
-    borderColor: '#E52D2F',
-    borderWidth: 1,
-    marginTop: 20,
-    width: 320,
-    height: 'auto'
-  },
-  gridOrga: {
-    marginTop: 10,
-    marginLeft: 40,
-    marginRight: 40,
-    marginBottom: 10,
-    justifyContent: 'center',
-    alignItems: 'center'
-  },
-  colOrgaIcon: {
-    width: '20%'
-  },
-  colOrgaText: {
-    width: '80%'
-  },
-  textDate: {
-    fontSize: 18,
-    textAlign: 'center',
-    marginRight: 'auto',
-    marginLeft: 'auto',
-    fontWeight: 'bold',
-    color: 'white'
-  },
-  textHeure: {
-    fontSize: 22,
-    textAlign: 'center',
-    marginRight: 'auto',
-    marginLeft: 'auto',
-    fontWeight: 'bold',
-    color: 'white'
-  },
-  textPrix: {
-    fontSize: 22,
-    textAlign: 'center',
-    marginRight: 'auto',
-    marginLeft: 'auto',
-    fontWeight: 'bold',
-    color: 'white'
-  },
   gridBouton: {
     marginLeft: 20,
     marginRight: 20
@@ -240,35 +156,6 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     fontWeight: 'bold',
     width: 320,
-  },
-  tiret: {
-    borderBottomColor: '#FFF',
-    borderBottomWidth: 3,
-    alignSelf: 'center',
-    marginLeft: 'auto',
-    marginRight: 'auto',
-    width: 250
-  },
-  viewParticipants: {
-    width: 320
-  },
-  colParticipantsText: {
-    width: '85%'
-  },
-  colParticipantsIcon: {
-    width: '15%'
-  },
-  textParticipants: {
-    color: '#fff',
-    fontWeight: 'bold',
-    fontSize: 14,
-    textAlign: 'center'
-  },
-  gridParticipants: {
-    marginTop: 15,
-    marginBottom: 5,
-    justifyContent: 'center',
-    alignItems: 'center'
   },
   participantsTitle: {
     color: '#FFF',
