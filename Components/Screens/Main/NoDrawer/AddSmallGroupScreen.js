@@ -39,8 +39,6 @@ export default class AddSmallGroupScreen extends React.Component {
     chosenDate: new Date()
   };
 
-  componentDidMount() {
-  }
 
   setDate(newDate) {
     this.setState({ chosenDate: newDate });
@@ -59,6 +57,23 @@ export default class AddSmallGroupScreen extends React.Component {
   }
 
   handleSubmit = () => {
+    let dd = this.state.chosenDate.getDate();
+    let mm = this.state.chosenDate.getMonth() + 1;
+    let yyyy = this.state.chosenDate.getFullYear();
+    if (dd < 10) {
+      dd = '0' + dd;
+    }
+    if (mm < 10) {
+      mm = '0' + mm;
+    }
+    this.state.chosenDate = dd + '/' + mm + "/" + yyyy;
+    let date = String(this.state.chosenDate)
+      console.log(this.state.typeSmallGroup, 'Discipline')
+      console.log(date, 'Jours')
+      console.log(this.state.hourSmallGroup, 'Horaires')
+      console.log(this.state.nbrParticipantSmallGroup, 'Nbr de participants')
+      console.log(this.state.prixSmallGroup, 'Prix')
+      console.log(this.state.programmeSmallGroup, 'Programme')
         Toast.show({
       text: "Annonce mise à jour !",
       type: "success"
@@ -93,14 +108,14 @@ export default class AddSmallGroupScreen extends React.Component {
                 selectedValue={this.state.typeSmallGroup}
                 onValueChange={this.onDisciplineChange.bind(this)}
               >
-                <Picker.Item label="RS Boxing" value="rsboxing" />
-                <Picker.Item label="Boxe Anglaise" value="boxeanglaise" />
-                <Picker.Item label="Muay Thaï" value="muaythai" />
-                <Picker.Item label="MMA" value="mma" />
-                <Picker.Item label="Grapping" value="grapping" />
-                <Picker.Item label="Conditioning" value="conditioning" />
-                <Picker.Item label="PIYO" value="piyo" />
-                <Picker.Item label="Kid" value="kid" />
+                <Picker.Item label="RS Boxing" value="RS Boxing" />
+                <Picker.Item label="Boxe Anglaise" value="Boxe Anglaise" />
+                <Picker.Item label="Muay Thaï" value="Muay Thaï" />
+                <Picker.Item label="MMA" value="MMA" />
+                <Picker.Item label="Grapping" value="Grapping" />
+                <Picker.Item label="Conditioning" value="Conditioning" />
+                <Picker.Item label="PIYO" value="PIYO" />
+                <Picker.Item label="Kid" value="Kid" />
               </Picker>
             </Item>
 
