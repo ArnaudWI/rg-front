@@ -34,6 +34,11 @@ class SmallGroupComposant extends React.Component {
     });
   }
 
+  detailsSmallGroup = () => {
+    this.props.handleReadSmallGroup(this.props.id, this.props.discipline, this.props.date, this.props.hour, this.props.nbrParticipants, this.props.price, this.props.programme, this.props.participantList);
+    this.props.navigation.navigate('SmallGroupDetails')
+  }
+
   render() {
 
     let removeStyle = {
@@ -78,7 +83,7 @@ class SmallGroupComposant extends React.Component {
             <Text style={styles.detailsText}>Participants : {this.props.participantList.length}/{this.props.nbrParticipants}</Text>
           </Col>
           <Col style={styles.colDetailsBouton}>
-            <Button style={styles.detailsBouton} onPress={ ()=> this.props.navigation.navigate('SmallGroupDetails')}>
+            <Button style={styles.detailsBouton} onPress={this.detailsSmallGroup}>
               <Text style={styles.detailsTextBouton}>Détails</Text>
             </Button>
           </Col>
@@ -101,6 +106,19 @@ function mapDispatchToProps(dispatch) {
       nbrParticipants: nbrParticipants,
       price: price,
       programme: programme
+    })
+  },
+  handleReadSmallGroup: function(id, discipline, date, hour, nbrParticipants, price, programme, participantList) {
+    dispatch({
+      type: 'readSmallGroup',
+      id: id,
+      discipline: discipline,
+      date: date,
+      hour: hour,
+      nbrParticipants: nbrParticipants,
+      price: price,
+      programme: programme,
+      participantList: participantList
     })
   }
  }

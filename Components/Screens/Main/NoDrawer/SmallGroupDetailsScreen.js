@@ -19,9 +19,12 @@ import TitleComposant from '../../../Composants/TitleComposant';
 import ParticipantsListingComposant from '../../../Composants/ParticipantsListingComposant';
 import OrgaSmallGroupDetailsComposant from '../../../Composants/OrgaSmallGroupDetailsComposant';
 import NbrParticipantsIndicationComposant from '../../../Composants/NbrParticipantsIndicationComposant';
+// import du socket
+import io from '../../../Sockets/sockets';
+// import de redux
+import {connect} from 'react-redux';
 
-
-export default class SmallGroupDetailsScreen extends React.Component {
+class SmallGroupDetailsScreen extends React.Component {
 
   state = {
     participationUser: false,
@@ -81,21 +84,22 @@ export default class SmallGroupDetailsScreen extends React.Component {
       boutonStyle.backgroundColor = '#E52D2F';
     }
 
+    let discipline = this.props.readSmallGroup.discipline
+
     return (
       <Container style={styles.container}>
-        <HeaderBackComposant title={'SG - Muay Thaï'}/>
+        <HeaderBackComposant title={'SG - ' + discipline}/>
           <ScrollView style={{flex: 1, alignSelf: 'center'}}>
             <TitleComposant title={'Organisation'}/>
 
-            <OrgaSmallGroupDetailsComposant date={'10/10/2019'} hour={'19h00'} price={'10'}/>
+            <OrgaSmallGroupDetailsComposant date={this.props.readSmallGroup.date} hour={this.props.readSmallGroup.hour} price={this.props.readSmallGroup.price}/>
 
-            <NbrParticipantsIndicationComposant nbrParticipantsMinimum={'5'}/>
+            <NbrParticipantsIndicationComposant nbrParticipantsMinimum={this.props.readSmallGroup.nbrParticipants}/>
 
             <TitleComposant title={'Programme'}/>
 
-            <Text style={styles.programmeText}>Levitate levitate praevenirent
-              verticosi accolas adcursu sed inopino pro inopino levitate per
-              enim circumfusus rumores.
+            <Text style={styles.programmeText}>
+              {this.props.readSmallGroup.programme}
             </Text>
 
             <Button style={boutonStyle}  onPress={this.handleSubmit}>
@@ -111,12 +115,14 @@ export default class SmallGroupDetailsScreen extends React.Component {
                 </Grid>
             </Button>
 
-            <Text style={styles.participantsTitle}>Participants : {participantsData.length} / 5
+            <Text style={styles.participantsTitle}>Participants : {this.props.readSmallGroup.participantList.length} / {this.props.readSmallGroup.nbrParticipants}
             </Text>
 
 
             <List>
-              {participantsList}
+              {this.props.readSmallGroup.participantList.length === 0
+              ? <Text style={styles.indicationParticipants}>Pour l'instant, il n'y a pas encore de participants pour le Small Group {this.props.readSmallGroup.discipline} du {this.props.readSmallGroup.date}. Soyez le premier à vous inscrire !</Text>
+              : {participantsList}}
             </List>
 
           </ScrollView>
@@ -124,6 +130,17 @@ export default class SmallGroupDetailsScreen extends React.Component {
     );
   }
 }
+
+function mapStateToProps(state) {
+  return {
+    readSmallGroup: state.readSmallGroup
+  };
+}
+
+export default connect(
+  mapStateToProps,
+  null
+)(SmallGroupDetailsScreen);
 
 const styles = StyleSheet.create({
   container: {
@@ -165,6 +182,13 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     width: 320,
   },
-
+  indicationParticipants: {
+    color: 'grey',
+    fontSize: 13,
+    marginTop: 15,
+    textAlign: 'center',
+    fontWeight: 'bold',
+    width: 320,
+  }
 
 });

@@ -9,6 +9,7 @@ import wodData from './Components/Reducers/wod.reducer';
 import updateAnnonce from './Components/Reducers/updateannonce.reducer';
 import userData from './Components/Reducers/user.reducer';
 import updateSmallGroup from './Components/Reducers/updatesmallgroup.reducer';
+import readSmallGroup from './Components/Reducers/readsmallgroup.reducer';
 // import de mes outils Redux
 import {Provider} from 'react-redux';
 import {createStore, combineReducers} from 'redux';
@@ -19,6 +20,7 @@ const store = createStore(combineReducers({
   updateAnnonce,
   userData,
   updateSmallGroup,
+  readSmallGroup
 }));
 
 export default class App extends React.Component {
