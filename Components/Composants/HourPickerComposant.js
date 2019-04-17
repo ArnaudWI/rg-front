@@ -16,6 +16,13 @@ export default class HourPickerComposant extends React.Component {
     hourSmallGroup: undefined,
   };
 
+  componentDidMount() {
+    if (this.props.valueHour) {
+      this.setState({
+        hourSmallGroup: this.props.valueHour
+      });
+    }
+  }
 
   onHourChange(value: string) {
     this.setState({

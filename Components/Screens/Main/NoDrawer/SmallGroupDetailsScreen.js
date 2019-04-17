@@ -111,7 +111,7 @@ export default class SmallGroupDetailsScreen extends React.Component {
                 </Grid>
             </Button>
 
-            <Text style={styles.participantsTitle}>Participants : 2 / 5
+            <Text style={styles.participantsTitle}>Participants : {participantsData.length} / 5
             </Text>
 
 

@@ -19,12 +19,17 @@ class AnnonceComposant extends React.Component {
     this.setState({
       removeAnnonce: !this.state.removeAnnonce
     });
-    this.props.handleRemoveAnnonce(this.props.id);
   }
 
   handleUpdate = () => {
     this.props.handleUpdateAnnonce(this.props.id, this.props.type, this.props.annonce, this.props.title, this.props.date);
     this.props.navigation.navigate('AddAnnonce');
+  }
+
+  removeComposantParent = (none) => {
+    this.setState({
+      removeAnnonce: none
+    });
   }
 
   render() {
@@ -64,14 +69,14 @@ class AnnonceComposant extends React.Component {
           <Col style={styles.colContentIcon}>
           {this.props.type === 'evenement' ? <Icon type="Ionicons" name="calendar" style={styles.iconContent}/>
             : this.props.type === 'alerte' ? <Icon type="Ionicons" name="warning" style={styles.iconContent}/>
-            : <Icon type="Ionicons" name="megaphone" style={styles.iconContent}/>}        
+            : <Icon type="Ionicons" name="megaphone" style={styles.iconContent}/>}
           </Col>
         </Grid>
 
         <Grid style={styles.gridDate}>
           <Text style={styles.dateText}>{this.props.date}</Text>
         </Grid>
-        <RemoveAnnonceComposant removeStyle={removeStyle}/>
+        <RemoveAnnonceComposant removeStyle={removeStyle} id={this.props.id} removeComposant={this.removeComposantParent}/>
       </View>
     );
   }
@@ -79,12 +84,6 @@ class AnnonceComposant extends React.Component {
 
 function mapDispatchToProps(dispatch) {
  return {
-  handleRemoveAnnonce: function(id) {
-    dispatch({
-      type: 'removeAnnonce',
-      id: id
-    })
-  },
   handleUpdateAnnonce: function(id, type, content, title, date) {
     dispatch({
       type: 'updateAnnonce',

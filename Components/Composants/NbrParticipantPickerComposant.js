@@ -16,6 +16,13 @@ export default class NbrParticipantPickerComposant extends React.Component {
     nbrPartSmallGroup: undefined,
   };
 
+  componentDidMount() {
+    if (this.props.valueNbr) {
+      this.setState({
+        nbrPartSmallGroup: this.props.valueNbr
+      });
+    }
+  }
 
   onNbrPartChange(value: number) {
     this.setState({

@@ -18,6 +18,13 @@ export default class DatePickerComposant extends React.Component {
     chosenDate: new Date()
   };
 
+  componentDidMount() {
+    if (this.props.valueDate) {
+      this.setState({
+        chosenDate: this.props.valueDate
+      });
+    }
+  }
 
   setDate(newDate) {
     this.setState({ chosenDate: newDate });

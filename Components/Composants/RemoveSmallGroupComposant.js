@@ -6,14 +6,14 @@ import { Grid, Col, View, Text, Icon } from "native-base";
 // import du socket
 import io from '../Sockets/sockets';
 
-export default class RemoveAnnonceComposant extends React.Component {
+export default class RemoveSmallGroupComposant extends React.Component {
 
   state = {
     displayNone: undefined,
   }
 
   removeYes = () => {
-    io.emit("removeAnnonce", this.props.id);
+    io.emit("removeSmallGroup", this.props.id);
     this.setState({
       displayNone: false
     });
@@ -26,7 +26,7 @@ export default class RemoveAnnonceComposant extends React.Component {
       <View style={this.props.removeStyle}>
 
         <Grid style={styles.gridRemoveQuestion}>
-          <Text style={styles.removeQuestion}>Supprimer cette annonce ?</Text>
+          <Text style={styles.removeQuestion}>Supprimer ce SmallGroup ?</Text>
         </Grid>
 
         <Grid style={styles.gridRemoveButton}>
@@ -39,7 +39,6 @@ export default class RemoveAnnonceComposant extends React.Component {
     );
   }
 }
-
 
 const styles = StyleSheet.create({
   gridRemoveQuestion: {

@@ -16,6 +16,13 @@ export default class DisciplinePickerComposant extends React.Component {
     disciplineSmallGroup: undefined,
   };
 
+  componentDidMount() {
+    if (this.props.valueDiscipline) {
+      this.setState({
+        disciplineSmallGroup: this.props.valueDiscipline
+      });
+    }
+  }
 
   onDisciplineChange(value: string) {
     this.setState({

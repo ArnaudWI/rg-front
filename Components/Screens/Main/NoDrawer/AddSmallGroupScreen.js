@@ -28,7 +28,7 @@ import io from '../../../Sockets/sockets';
 // import de redux
 import {connect} from 'react-redux';
 
-export default class AddSmallGroupScreen extends React.Component {
+class AddSmallGroupScreen extends React.Component {
 
   state = {
     disciplineSmallGroup: undefined,
@@ -36,9 +36,23 @@ export default class AddSmallGroupScreen extends React.Component {
     programmeSmallGroup: '',
     prixSmallGroup: '',
     nbrPartSmallGroup: undefined,
-    dateSmallGroup: ''
+    dateSmallGroup: '',
+    id: ''
   };
 
+  componentDidMount() {
+    if (this.props.updateSmallGroup) {
+      this.setState({
+        programmeSmallGroup: this.props.updateSmallGroup.programme,
+        prixSmallGroup: this.props.updateSmallGroup.price,
+        dateSmallGroup: this.props.updateSmallGroup.date,
+        id: this.props.updateSmallGroup.id,
+        nbrPartSmallGroup: this.props.updateSmallGroup.nbrParticipants,
+        hourSmallGroup: this.props.updateSmallGroup.hour,
+        disciplineSmallGroup: this.props.updateSmallGroup.discipline,
+      });
+    }
+  }
 
   onHourChange(value: string) {
     this.setState({
@@ -82,17 +96,21 @@ export default class AddSmallGroupScreen extends React.Component {
   }
 
   handleSubmit = () => {
-      console.log(this.state.disciplineSmallGroup, 'Discipline')
-      console.log(this.state.dateSmallGroup, 'Jours')
-      console.log(this.state.hourSmallGroup, 'Horaires')
-      console.log(this.state.nbrPartSmallGroup, 'Nbr de participants')
-      console.log(this.state.prixSmallGroup, 'Prix')
-      console.log(this.state.programmeSmallGroup, 'Programme')
+    if (!this.state.id) {
+      io.emit("addSmallGroup", {discipline: this.state.disciplineSmallGroup, date: this.state.dateSmallGroup, hour: this.state.hourSmallGroup, nbrParticipants: this.state.nbrPartSmallGroup, price: this.state.prixSmallGroup, programme: this.state.programmeSmallGroup });
         Toast.show({
-      text: "Annonce mise à jour !",
+      text: "Ajout d'un smallgroup !",
       type: "success"
       })
       this.props.navigation.navigate('Small Group')
+    } else if (this.state.id) {
+      io.emit("updateSmallGroup", {discipline: this.state.disciplineSmallGroup, date: this.state.dateSmallGroup, hour: this.state.hourSmallGroup, nbrParticipants: this.state.nbrPartSmallGroup, price: this.state.prixSmallGroup, programme: this.state.programmeSmallGroup, id: this.state.id});
+        Toast.show({
+      text: "Mise à jour du smallgroup !",
+      type: "success"
+      })
+      this.props.navigation.navigate('Small Group')
+    }
   };
 
   render() {
@@ -103,17 +121,17 @@ export default class AddSmallGroupScreen extends React.Component {
 
           <Form style={styles.form}>
 
-            <DisciplinePickerComposant chosenDiscipline={this.disciplineChoose}/>
+            <DisciplinePickerComposant chosenDiscipline={this.disciplineChoose} valueDiscipline={this.props.updateSmallGroup.discipline}/>
 
-            <DatePickerComposant chosenDate={this.dateChoose} />
+            <DatePickerComposant chosenDate={this.dateChoose} valueDate={this.props.updateSmallGroup.date}/>
 
-            <HourPickerComposant chosenHour={this.hourChoose}/>
+            <HourPickerComposant chosenHour={this.hourChoose} valueHour={this.props.updateSmallGroup.hour}/>
 
-            <NbrParticipantPickerComposant chosenNbrPart={this.nbrPartChoose}/>
+            <NbrParticipantPickerComposant chosenNbrPart={this.nbrPartChoose} valueNbr={this.props.updateSmallGroup.nbrParticipants}/>
 
             <Item style={styles.itemTitle}>
               <Label style={styles.titleLabel} >Prix :</Label>
-              <Input style={styles.titleInput} onChangeText={(text) => this.setState({prixSmallGroup: text})}/>
+              <Input style={styles.titleInput} value={this.state.prixSmallGroup} onChangeText={(text) => this.setState({prixSmallGroup: text})}/>
             </Item>
 
             <Textarea
@@ -135,6 +153,18 @@ export default class AddSmallGroupScreen extends React.Component {
     );
   }
 }
+
+
+function mapStateToProps(state) {
+  return {
+    updateSmallGroup: state.updateSmallGroup
+  };
+}
+
+export default connect(
+  mapStateToProps,
+  null
+)(AddSmallGroupScreen);
 
 const styles = StyleSheet.create({
   container: {
