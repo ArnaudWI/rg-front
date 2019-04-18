@@ -2,7 +2,7 @@ export default function (user = {}, action) {
   if(action.type === 'setUserData') {
     let userCopy = {
       ...user,
-      name: action.name,
+      lastName: action.name,
       firstName: action.firstName,
       email: action.email,
       id: action.id

@@ -35,7 +35,6 @@ class SmallGroupScreen extends React.Component {
       this.setState({
         smallgroupList: data,
       })
-      console.log(this.state.smallgroupList[0].participantList.length)
     }
     ).catch(error => console.error(error));
     io.on('smallgroupAdded', smallgroup => {

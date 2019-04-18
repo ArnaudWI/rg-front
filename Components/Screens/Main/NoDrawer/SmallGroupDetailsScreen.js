@@ -11,7 +11,8 @@ import {
   Grid,
   Col,
   List,
-  ListItem
+  ListItem,
+  Toast
 } from 'native-base';
 // import des composants JS
 import HeaderBackComposant from '../../../Composants/HeaderBackComposant';
@@ -28,37 +29,79 @@ class SmallGroupDetailsScreen extends React.Component {
 
   state = {
     participationUser: false,
+    participantList: [],
+    nbrParticipantsReal: null,
+  }
+  _isMounted = false
+
+  componentDidMount() {
+  this._isMounted = true
+      if (this.props.readSmallGroup) {
+        if (this._isMounted) {
+          this.setState({
+            participantList: this.props.readSmallGroup.participantList,
+            nbrParticipantsReal: this.props.readSmallGroup.participantList.length,
+          });
+        }
+      }
+      io.on('participantAdded', smallgroup => {
+        if (this._isMounted) {
+          this.setState({
+            participantList: smallgroup.participantList,
+            nbrParticipantsReal: smallgroup.participantList.length,
+          })
+        }
+      });
+      io.on('participantRemoved', smallgroup => {
+        if (this._isMounted) {
+          this.setState({
+            participantList: smallgroup.participantList,
+            nbrParticipantsReal: smallgroup.participantList.length,
+          })
+        }
+      });
+
+      for (var i = 0; i < this.props.readSmallGroup.participantList.length; i++) {
+        if (this.props.user.id === this.props.readSmallGroup.participantList[i].idUser) {
+          if (this._isMounted) {
+            this.setState({
+              participationUser: true
+            });
+          }
+        }
+      }
+
   }
 
+componentWillUnmount() {
+  this._isMounted = false
+}
+
  handleSubmit = () => {
-  this.setState({
-    participationUser: !this.state.participationUser
-  });
-  console.log(this.state.participationUser)
+   if (this.state.nbrParticipantsReal == this.props.readSmallGroup.nbrParticipants) {
+     Toast.show({
+       text: "Small Group complet !",
+       position: "top",
+       duration: 3000
+     })
+   }  else {
+       if (!this.state.participationUser) {
+        io.emit("addParticipant", {idSmallGroup:this.props.readSmallGroup.id , firstName: this.props.user.firstName, lastName: this.props.user.lastName, idUser: this.props.user.id});
+      } else if (this.state.participationUser) {
+        io.emit("removeParticipant", {idSmallGroup:this.props.readSmallGroup.id , idUser: this.props.user.id});
+      }
+      if (this._isMounted) {
+        this.setState({
+          participationUser: !this.state.participationUser
+        });
+      }
+   }
+
 }
 
   render() {
 
-    let participantsData = [
-      {
-        lastName: 'Doe',
-        firstName: 'Jane'
-      },
-      {
-        lastName: 'Doe',
-        firstName: 'John'
-      },
-      {
-        lastName: 'Chang',
-        firstName: 'Mai'
-      },
-      {
-        lastName: 'Einstein',
-        firstName: 'Albert'
-      },
-    ]
-
-    let participantsList = participantsData.map((participant, i) =>
+    let participantsList = this.state.participantList.map((participant, i) =>
       <ParticipantsListingComposant key={i}
         firstName={participant.firstName} lastName={participant.lastName}
         position={i + 1}/>)
@@ -77,12 +120,15 @@ class SmallGroupDetailsScreen extends React.Component {
       justifyContent: 'center'
     }
 
+
     let participation = 'Je participe';
 
     if (this.state.participationUser) {
       participation = 'Je ne participe plus';
       boutonStyle.backgroundColor = '#E52D2F';
     }
+
+
 
     let discipline = this.props.readSmallGroup.discipline
 
@@ -115,14 +161,14 @@ class SmallGroupDetailsScreen extends React.Component {
                 </Grid>
             </Button>
 
-            <Text style={styles.participantsTitle}>Participants : {this.props.readSmallGroup.participantList.length} / {this.props.readSmallGroup.nbrParticipants}
+            <Text style={styles.participantsTitle}>Participants : {this.state.nbrParticipantsReal} / {this.props.readSmallGroup.nbrParticipants}
             </Text>
 
 
             <List>
-              {this.props.readSmallGroup.participantList.length === 0
+              {this.state.nbrParticipantsReal === 0
               ? <Text style={styles.indicationParticipants}>Pour l'instant, il n'y a pas encore de participants pour le Small Group {this.props.readSmallGroup.discipline} du {this.props.readSmallGroup.date}. Soyez le premier à vous inscrire !</Text>
-              : {participantsList}}
+              : participantsList}
             </List>
 
           </ScrollView>
@@ -133,8 +179,9 @@ class SmallGroupDetailsScreen extends React.Component {
 
 function mapStateToProps(state) {
   return {
-    readSmallGroup: state.readSmallGroup
-  };
+    readSmallGroup: state.readSmallGroup,
+    user: state.userData
+  }
 }
 
 export default connect(
