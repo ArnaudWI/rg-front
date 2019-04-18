@@ -78,26 +78,30 @@ componentWillUnmount() {
 }
 
  handleSubmit = () => {
-   if (this.state.nbrParticipantsReal == this.props.readSmallGroup.nbrParticipants) {
-     Toast.show({
-       text: "Small Group complet !",
-       position: "top",
-       duration: 3000
-     })
-   }  else {
-       if (!this.state.participationUser) {
+    if (!this.state.participationUser) {
+      if (this.state.nbrParticipantsReal == this.props.readSmallGroup.nbrParticipants) {
+        Toast.show({
+          text: "Small Group complet !",
+          type: 'danger',
+          duration: 2000
+        })
+      } else {
         io.emit("addParticipant", {idSmallGroup:this.props.readSmallGroup.id , firstName: this.props.user.firstName, lastName: this.props.user.lastName, idUser: this.props.user.id});
-      } else if (this.state.participationUser) {
-        io.emit("removeParticipant", {idSmallGroup:this.props.readSmallGroup.id , idUser: this.props.user.id});
+        if (this._isMounted) {
+          this.setState({
+            participationUser: !this.state.participationUser
+          });
+        }
       }
+    } else if (this.state.participationUser) {
+      io.emit("removeParticipant", {idSmallGroup:this.props.readSmallGroup.id , idUser: this.props.user.id});
       if (this._isMounted) {
         this.setState({
           participationUser: !this.state.participationUser
         });
       }
-   }
-
-}
+    }
+  }
 
   render() {
 

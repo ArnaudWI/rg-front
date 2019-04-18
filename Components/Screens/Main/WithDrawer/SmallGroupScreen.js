@@ -27,31 +27,45 @@ class SmallGroupScreen extends React.Component {
   state = {
     smallgroupList: []
   }
+  _isMounted = false
 
   componentDidMount() {
+    this._isMounted = true
     fetch(`http://${ipAddress}:3000/smallgroup`)
     .then(response => response.json())
     .then(data => {
-      this.setState({
-        smallgroupList: data,
-      })
+      if (this._isMounted) {
+        this.setState({
+          smallgroupList: data,
+        })
+      }
     }
     ).catch(error => console.error(error));
     io.on('smallgroupAdded', smallgroup => {
-      this.setState({
-        smallgroupList: smallgroup,
-      })
+      if (this._isMounted) {
+        this.setState({
+          smallgroupList: smallgroup,
+        })
+      }
     });
     io.on('smallgroupRemoved', smallgroup => {
-      this.setState({
-        smallgroupList: smallgroup,
-      })
+      if (this._isMounted) {
+        this.setState({
+          smallgroupList: smallgroup,
+        })
+      }
     });
     io.on('smallgroupUpdated', smallgroup => {
-      this.setState({
-        smallgroupList: smallgroup,
-      })
+      if (this._isMounted) {
+        this.setState({
+          smallgroupList: smallgroup,
+        })
+      }
     });
+  }
+
+  componentWillUnmount() {
+    this._isMounted = false
   }
 
   addSmallGroup = () => {
