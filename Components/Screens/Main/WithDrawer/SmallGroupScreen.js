@@ -14,6 +14,7 @@ import {
 import HeaderMenuComposant from '../../../Composants/HeaderMenuComposant';
 import SmallGroupComposant from '../../../Composants/SmallGroupComposant';
 import DisciplinePickerComposant from '../../../Composants/DisciplinePickerComposant';
+import DatePickerSmallGroupComposant from '../../../Composants/DatePickerSmallGroupComposant';
 // import du socket
 import io from '../../../Sockets/sockets';
 // import de redux
@@ -64,17 +65,18 @@ class SmallGroupScreen extends React.Component {
         })
       }
     });
+    io.emit("readSmallGroup");
   }
 
   componentWillUnmount() {
     this._isMounted = false
   }
 
-  disciplineChoose = (discipline) => {
+  filterChoose = (element) => {
     let smallgroupListFiltred = [];
     io.emit("readSmallGroup");
     io.on('smallgroupReaded', smallgroup => {
-      if (discipline === 'Toutes les disciplines') {
+      if (element === 'Toutes les disciplines' || element  === 'Toutes les dates') {
         if (this._isMounted) {
           this.setState({
             smallgroupList: smallgroup,
@@ -82,7 +84,8 @@ class SmallGroupScreen extends React.Component {
         }
       } else {
         smallgroupListFiltred = smallgroup.filter(function (el) {
-          return el.discipline == discipline
+          return el.discipline == element ||
+                el.date == element;
         });
         if (this._isMounted) {
           this.setState({
@@ -124,7 +127,8 @@ class SmallGroupScreen extends React.Component {
           </Button>
 
           <Form style={styles.form}>
-            <DisciplinePickerComposant chosenDiscipline={this.disciplineChoose}/>
+            <DisciplinePickerComposant chosenDiscipline={this.filterChoose}/>
+            <DatePickerSmallGroupComposant chosenDate={this.filterChoose}/>
           </Form>
 
           {smallgroupList.reverse()}
