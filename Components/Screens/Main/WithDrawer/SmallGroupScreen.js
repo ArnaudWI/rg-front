@@ -7,11 +7,13 @@ import {
   Text,
   Button,
   Icon,
-  Container
+  Container,
+  Form
 } from 'native-base';
 // import des composants JS
 import HeaderMenuComposant from '../../../Composants/HeaderMenuComposant';
 import SmallGroupComposant from '../../../Composants/SmallGroupComposant';
+import DisciplinePickerComposant from '../../../Composants/DisciplinePickerComposant';
 // import du socket
 import io from '../../../Sockets/sockets';
 // import de redux
@@ -68,6 +70,29 @@ class SmallGroupScreen extends React.Component {
     this._isMounted = false
   }
 
+  disciplineChoose = (discipline) => {
+    let smallgroupListFiltred = [];
+    io.emit("readSmallGroup");
+    io.on('smallgroupReaded', smallgroup => {
+      if (discipline === 'Toutes les disciplines') {
+        if (this._isMounted) {
+          this.setState({
+            smallgroupList: smallgroup,
+          });
+        }
+      } else {
+        smallgroupListFiltred = smallgroup.filter(function (el) {
+          return el.discipline == discipline
+        });
+        if (this._isMounted) {
+          this.setState({
+            smallgroupList: smallgroupListFiltred,
+          });
+        }
+      }
+    });
+  }
+
   addSmallGroup = () => {
     this.props.handleAddSmallGroup();
     this.props.navigation.navigate('AddSmallGroup');
@@ -88,13 +113,19 @@ class SmallGroupScreen extends React.Component {
       participantList={smallgroup.participantList}
       />);
 
+
     return (
       <Container style={styles.container}>
         <HeaderMenuComposant title={'Small Group'}/>
           <ScrollView style={{flex: 1, alignSelf: 'center'}}>
+
           <Button style={styles.bouton} onPress={this.addSmallGroup}>
             <Text style={styles.textBouton} >Ajouter un SmallGroup</Text>
           </Button>
+
+          <Form style={styles.form}>
+            <DisciplinePickerComposant chosenDiscipline={this.disciplineChoose}/>
+          </Form>
 
           {smallgroupList.reverse()}
           </ScrollView>
@@ -153,5 +184,8 @@ const styles = StyleSheet.create({
     marginRight: 'auto',
     marginLeft: 'auto',
     fontWeight: 'bold'
+  },
+  form: {
+    width: 320,
   },
 });

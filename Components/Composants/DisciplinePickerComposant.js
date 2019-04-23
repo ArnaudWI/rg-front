@@ -52,6 +52,7 @@ export default class DisciplinePickerComposant extends React.Component {
                 selectedValue={this.state.disciplineSmallGroup}
                 onValueChange={this.onDisciplineChange.bind(this)}
               >
+                <Picker.Item label="Toutes les disciplines" value="Toutes les disciplines" />
                 <Picker.Item label="RS Boxing" value="RS Boxing" />
                 <Picker.Item label="Boxe Anglaise" value="Boxe Anglaise" />
                 <Picker.Item label="Muay Thaï" value="Muay Thaï" />
