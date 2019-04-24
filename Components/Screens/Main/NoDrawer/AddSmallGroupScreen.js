@@ -121,7 +121,7 @@ class AddSmallGroupScreen extends React.Component {
 
           <Form style={styles.form}>
 
-            <DisciplinePickerComposant chosenDiscipline={this.disciplineChoose} valueDiscipline={this.props.updateSmallGroup.discipline}/>
+            <DisciplinePickerComposant chosenDiscipline={this.disciplineChoose} valueDiscipline={this.props.updateSmallGroup.discipline} placeholder='Choisir'/>
 
             <DatePickerComposant chosenDate={this.dateChoose} valueDate={this.props.updateSmallGroup.date}/>
 

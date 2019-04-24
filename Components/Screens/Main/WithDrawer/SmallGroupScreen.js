@@ -28,7 +28,10 @@ class SmallGroupScreen extends React.Component {
   }
 
   state = {
-    smallgroupList: []
+    smallgroupList: [],
+    dateSmallGroup: undefined,
+    disciplineSmallGroup: undefined,
+
   }
   _isMounted = false
 
@@ -72,20 +75,52 @@ class SmallGroupScreen extends React.Component {
     this._isMounted = false
   }
 
-  filterChoose = (element) => {
+  disciplineChoose = (discipline) => {
+    this.setState({
+      disciplineSmallGroup: discipline
+    });
+  }
+
+  dateChoose = (date) => {
+    this.setState({
+      dateSmallGroup: date
+    });
+  }
+
+  filterChoose = () => {
     let smallgroupListFiltred = [];
+    let disciplineSave = this.state.disciplineSmallGroup;
+    let dateSave = this.state.dateSmallGroup;
     io.emit("readSmallGroup");
     io.on('smallgroupReaded', smallgroup => {
-      if (element === 'Toutes les disciplines' || element  === 'Toutes les dates') {
+      if ((disciplineSave === 'Toutes les disciplines' || disciplineSave === undefined) && (dateSave  === 'Toutes les dates'|| disciplineSave === undefined)) {
         if (this._isMounted) {
           this.setState({
             smallgroupList: smallgroup,
           });
         }
-      } else {
+      } else if ((disciplineSave === 'Toutes les disciplines' || disciplineSave === undefined) && dateSave  !== 'Toutes les dates') {
         smallgroupListFiltred = smallgroup.filter(function (el) {
-          return el.discipline == element ||
-                el.date == element;
+          return  el.date == dateSave;
+        });
+        if (this._isMounted) {
+          this.setState({
+            smallgroupList: smallgroupListFiltred,
+          });
+        }
+      } else if (disciplineSave !== 'Toutes les disciplines' && (dateSave  === 'Toutes les dates' || disciplineSave === undefined)) {
+        smallgroupListFiltred = smallgroup.filter(function (el) {
+          return  el.discipline == disciplineSave;
+        });
+        if (this._isMounted) {
+          this.setState({
+            smallgroupList: smallgroupListFiltred,
+          });
+        }
+      }  else {
+        smallgroupListFiltred = smallgroup.filter(function (el) {
+          return el.discipline == disciplineSave &&
+                el.date == dateSave;
         });
         if (this._isMounted) {
           this.setState({
@@ -127,11 +162,18 @@ class SmallGroupScreen extends React.Component {
           </Button>
 
           <Form style={styles.form}>
-            <DisciplinePickerComposant chosenDiscipline={this.filterChoose}/>
-            <DatePickerSmallGroupComposant chosenDate={this.filterChoose}/>
+            <DisciplinePickerComposant chosenDiscipline={this.disciplineChoose} placeholder="Filtrer par discipline"/>
+            <DatePickerSmallGroupComposant chosenDate={this.dateChoose}/>
           </Form>
 
-          {smallgroupList.reverse()}
+          <Button style={styles.boutonFiltre} onPress={this.filterChoose}>
+            <Text style={styles.textBouton} >Je filtre ma recherche</Text>
+          </Button>
+
+          {smallgroupList.length === 0
+          ? <Text style={styles.indicationWithoutSmallGroup}>Il n'y a pas de SmallGroup avec les filtres que vous avez choisi. Vous pouvez toujours utiliser des filtres différents ! :)</Text>
+          : smallgroupList.reverse()}
+
           </ScrollView>
       </Container>
 
@@ -191,5 +233,24 @@ const styles = StyleSheet.create({
   },
   form: {
     width: 320,
+  },
+  indicationWithoutSmallGroup: {
+    color: 'white',
+    fontSize: 20,
+    marginTop: 15,
+    textAlign: 'center',
+    fontWeight: 'bold',
+    width: 320,
+  },
+  boutonFiltre: {
+    height: 60,
+    width: 320,
+    backgroundColor: '#4a802a',
+    borderColor: 'black',
+    borderStyle: 'solid',
+    borderWidth: 2,
+    borderRadius: 0,
+    alignSelf: 'center',
+    marginTop: 20
   },
 });

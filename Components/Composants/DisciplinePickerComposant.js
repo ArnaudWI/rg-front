@@ -45,7 +45,7 @@ export default class DisciplinePickerComposant extends React.Component {
                 itemTextStyle={{color: '#fff'}}
                 mode="dropdown"
                 style={{ width: undefined}}
-                placeholder="Choisir"
+                placeholder={this.props.placeholder}
                 placeholderStyle={{ color: "grey"}}
                 textStyle={{color: 'white'}}
                 placeholderIconColor="#fff"
