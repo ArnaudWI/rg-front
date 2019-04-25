@@ -93,7 +93,7 @@ class SmallGroupScreen extends React.Component {
     let dateSave = this.state.dateSmallGroup;
     io.emit("readSmallGroup");
     io.on('smallgroupReaded', smallgroup => {
-      if ((disciplineSave === 'Toutes les disciplines' || disciplineSave === undefined) && (dateSave  === 'Toutes les dates'|| disciplineSave === undefined)) {
+      if ((disciplineSave === 'Toutes les disciplines' || disciplineSave === undefined) && (dateSave  === 'Toutes les dates'|| dateSave === undefined)) {
         if (this._isMounted) {
           this.setState({
             smallgroupList: smallgroup,
