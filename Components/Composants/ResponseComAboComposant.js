@@ -2,34 +2,69 @@ import React from 'react';
 //import bibliothèque react native
 import {StyleSheet } from 'react-native';
 //import bibliothèque native base
-import { Grid, Col, View, Text, Icon, Form, Textarea, Button, Item, Label, Right} from "native-base";
+import { Grid, Col, View, Text, Icon, Form, Textarea, Button, Item, Label, Right, Toast} from "native-base";
 // import du socket
 import io from '../Sockets/sockets';
 // import des composants JS
 import ResponseComposant from './ResponseComposant';
+// import de redux
+import {connect} from 'react-redux';
 
-export default class ResponseComAboComposant extends React.Component {
+class ResponseComAboComposant extends React.Component {
 
   state = {
-    response: ''
+    response: '',
+    responseList: []
+  }
+
+  componentDidMount() {
+    this.setState({
+      responseList: this.props.responseList
+    })
+    io.on('responseAdded', responseList => {
+        this.setState({
+          responseList: responseList,
+        });
+    });
+  }
+
+  handleResponse = () => {
+    Toast.show({
+      text: "Réponse émise !",
+      type: "success",
+      position: "top",
+      duration: 2000
+    })
+    io.emit("addResponse", {idrdvtrainings: this.props.id, responseContent: this.state.response, responseAuteur: this.props.user.firstName});
+    this.setState({
+      response: ''
+    })
   }
 
   render() {
+
+    let responseList = this.state.responseList.map((response, i) =>
+      <ResponseComposant
+      key={i}
+      responseContent={response.responseContent}
+      responseAuteur={response.responseAuteur}
+      />);
+
     return (
       <View style={this.props.responseStyle}>
 
-        <ResponseComposant/>
-        <ResponseComposant/>
+        {responseList}
 
         <Grid style={styles.gridResponseForm}>
           <Form style={styles.form}>
 
           <Item stackedLabel style={styles.itemTitle}>
-            <Label style={styles.titleLabel} >Gerald dit:</Label>
+            <Label style={styles.titleLabel} >{this.props.user.firstName} dit:</Label>
             <Textarea
               style={styles.textArea}
               rowSpan={3}
               bordered
+              value={this.state.response}
               placeholder="Je répond à la proposition de training..."
               onChangeText={text => this.setState({response: text})}
             />
@@ -40,7 +75,7 @@ export default class ResponseComAboComposant extends React.Component {
 
         <Grid style={styles.gridResponseBouton}>
           <Right>
-            <Button style={styles.detailsBouton} onPress={() => console.log(this.state.response)}>
+            <Button style={styles.detailsBouton} onPress={this.handleResponse}>
               <Text style={styles.detailsTextBouton}>Je Réponds</Text>
             </Button>
           </Right>
@@ -49,6 +84,17 @@ export default class ResponseComAboComposant extends React.Component {
     );
   }
 }
+
+function mapStateToProps(state) {
+  return {
+    user: state.userData,
+  };
+}
+
+export default connect(
+  mapStateToProps,
+  null
+)(ResponseComAboComposant);
 
 const styles = StyleSheet.create({
   gridRemoveQuestion: {

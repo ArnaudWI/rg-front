@@ -40,20 +40,27 @@ class AddRDVTrainingScreen extends React.Component {
     let today = new Date()
     let dd = today.getDate();
     let mm = today.getMonth() + 1;
+    let hh = today.getHours();
+    let min = today.getMinutes();
     if (dd < 10) {
       dd = '0' + dd;
     }
     if (mm < 10) {
       mm = '0' + mm;
     }
-    today = dd + '/' + mm;
+    if (hh < 10) {
+      hh = '0' + hh;
+    }
+    if (min < 10) {
+      min = '0' + min;
+    }
+    today = 'Ajouté le ' + dd + '/' + mm + " à " + hh + "h" + min;
     let date = String(today)
       Toast.show({
     text: "Votre Training a été ajouté !",
     type: "success"
     })
-    console.log(this.state.training)
-    console.log(this.state.auteurTraining)
+    io.emit("addRDVTraining", {auteur: this.state.auteurTraining , content: this.state.training, discipline: this.props.disciplineChoosen, date});
     this.props.navigation.navigate('RDVTrainingDetails');
   };
 
@@ -99,6 +106,7 @@ class AddRDVTrainingScreen extends React.Component {
 function mapStateToProps(state) {
   return {
     user: state.userData,
+    disciplineChoosen: state.disciplineChoosen
   };
 }
 

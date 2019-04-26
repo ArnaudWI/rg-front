@@ -64,7 +64,7 @@ class SignUpScreen extends React.Component {
           </Item>
         </Form>
 
-        <Button style={styles.bouton} onPress={() => this.props.navigation.navigate('RDVTrainingDetails')}>
+        <Button style={styles.bouton} onPress={this.handleSubmit}>
           <Text style={styles.textBouton}>Connexion</Text>
         </Button>
 
@@ -73,6 +73,8 @@ class SignUpScreen extends React.Component {
     );
   }
 }
+
+// () => this.props.navigation.navigate('RDVTrainingDetails')
 
 function mapDispatchToProps(dispatch) {
   return {

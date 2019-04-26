@@ -18,7 +18,19 @@ import ViewMoreText from 'react-native-view-more-text';
 class ComAboComposant extends React.Component {
   state = {
     displayRemoveComAbo: false,
-    displayResponseComAbo: false
+    displayResponseComAbo: false,
+    numberOfResponses: undefined
+  }
+
+  componentDidMount() {
+    this.setState({
+      numberOfResponses: this.props.responseList.length
+    })
+    io.on('responseAdded', responseList => {
+        this.setState({
+          numberOfResponses: responseList.length,
+        });
+    });
   }
 
   handleRemove = () => {
@@ -88,7 +100,7 @@ class ComAboComposant extends React.Component {
             <Icon name="refresh" style={styles.iconAdmin}/>
           </Col>
           <Col style={styles.colTitleText}>
-            <Text style={styles.title}>Training - MMA</Text>
+            <Text style={styles.title}>Training - {this.props.discipline}</Text>
           </Col>
           <Col style={styles.colTitleIcon} onPress={this.handleRemove}>
             <Icon name="trash" style={styles.iconAdmin}/>
@@ -96,7 +108,7 @@ class ComAboComposant extends React.Component {
         </Grid>
 
         <Grid style={styles.gridTraining}>
-          <Text  style={styles.auteurText}>Albert propose un training :</Text>
+          <Text  style={styles.auteurText}>{this.props.auteur} propose un training :</Text>
         </Grid>
 
         <Grid style={styles.gridTraining}>
@@ -105,7 +117,7 @@ class ComAboComposant extends React.Component {
            renderViewMore={this.renderViewMore}
            renderViewLess={this.renderViewLess}
            >
-             <Text  style={styles.trainingText}>Hello, je suis Albert, je souhaiterais pratiquer du MMA tous les soir à partir de 17h. J'ai un niveau intermédiaire mais je souhaite m'améliorer pour du compétitif :) voila voila ! </Text>
+             <Text  style={styles.trainingText}>{this.props.content}</Text>
           </ViewMoreText>
         </Grid>
 
@@ -113,7 +125,7 @@ class ComAboComposant extends React.Component {
 
         <Grid style={styles.gridDetails}>
           <Col style={styles.colDetailsText}>
-            <Text style={styles.detailsText}>10 Réponses</Text>
+            <Text style={styles.detailsText}>{this.state.numberOfResponses} {this.state.numberOfResponses < 2 ? 'Réponse' : 'Réponses'}</Text>
           </Col>
           <Col style={styles.colDetailsBouton}>
             <Button style={styles.detailsBouton} onPress={this.handleResponse}>
@@ -123,9 +135,9 @@ class ComAboComposant extends React.Component {
         </Grid>
 
         <Grid style={styles.gridDate}>
-          <Text style={styles.dateText}>Ajouté le 20/04</Text>
+          <Text style={styles.dateText}>{this.props.date}</Text>
         </Grid>
-        <ResponseComAboComposant responseStyle={responseStyle}/>
+        <ResponseComAboComposant responseStyle={responseStyle} id={this.props.id} responseList={this.props.responseList}/>
         <RemoveComAboComposant removeStyle={removeStyle} id={this.props.id} removeComposant={this.removeComposantParent}/>
       </View>
     );
@@ -141,7 +153,6 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     marginTop: 20,
     width: 320,
-    marginBottom: 230
   },
   gridTitle: {
     height: 'auto',

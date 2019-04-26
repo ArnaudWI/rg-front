@@ -13,7 +13,7 @@ export default class RemoveComAboComposant extends React.Component {
   }
 
   removeYes = () => {
-    io.emit("removeSmallGroup", this.props.id);
+    io.emit("removeRDVTraining", this.props.id);
     this.setState({
       displayNone: false
     });

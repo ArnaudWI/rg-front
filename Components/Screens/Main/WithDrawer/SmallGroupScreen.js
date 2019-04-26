@@ -30,8 +30,7 @@ class SmallGroupScreen extends React.Component {
   state = {
     smallgroupList: [],
     dateSmallGroup: undefined,
-    disciplineSmallGroup: undefined,
-
+    disciplineSmallGroup: undefined
   }
   _isMounted = false
 

@@ -20,11 +20,11 @@ export default class ResponseComposant extends React.Component {
       <View style={styles.responseBlock}>
 
         <Grid style={styles.gridResponseAuteur}>
-            <Text style={styles.responseAuteurName}>Gerald :</Text>
+            <Text style={styles.responseAuteurName}>{this.props.responseAuteur} :</Text>
         </Grid>
 
         <Grid style={styles.gridResponseText}>
-            <Text style={styles.responseText}>Je serais intéressé pour m'entrainer avec toi, je viens de commencer il y a 2 semaines mais j'ai un très bon niveau !</Text>
+            <Text style={styles.responseText}>{this.props.responseContent}</Text>
         </Grid>
 
       </View>
@@ -53,7 +53,6 @@ const styles = StyleSheet.create({
   },
   gridResponseText: {
     margin: 5,
-    justifyContent: 'center'
   },
   responseText: {
     color: '#FFF',
