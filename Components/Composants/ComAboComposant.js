@@ -21,34 +21,50 @@ class ComAboComposant extends React.Component {
     displayResponseComAbo: false,
     numberOfResponses: undefined
   }
+  _isMounted = false
 
   componentDidMount() {
-    this.setState({
-      numberOfResponses: this.props.responseList.length
-    })
+    this._isMounted = true
+    if (this._isMounted) {
+      this.setState({
+        numberOfResponses: this.props.responseList.length
+      })
+    }
     io.on('responseAdded', responseList => {
+      if (this._isMounted) {
         this.setState({
           numberOfResponses: responseList.length,
         });
+      }
     });
+  }
+
+  componentWillUnmount() {
+    this._isMounted = false
   }
 
   handleRemove = () => {
-    this.setState({
-      displayRemoveComAbo: !this.state.displayRemoveComAbo
-    });
+    if (this._isMounted) {
+      this.setState({
+        displayRemoveComAbo: !this.state.displayRemoveComAbo
+      });
+    }
   }
 
   handleResponse = () => {
-    this.setState({
-      displayResponseComAbo: !this.state.displayResponseComAbo
-    });
+    if (this._isMounted) {
+      this.setState({
+        displayResponseComAbo: !this.state.displayResponseComAbo
+      });
+    }
   }
 
   removeComposantParent = (none) => {
-    this.setState({
-      displayRemoveComAbo: none
-    });
+    if (this._isMounted) {
+      this.setState({
+        displayRemoveComAbo: none
+      });
+    }
   }
 
 

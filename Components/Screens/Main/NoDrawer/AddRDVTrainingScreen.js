@@ -28,12 +28,20 @@ class AddRDVTrainingScreen extends React.Component {
     training: '',
     auteurTraining: ''
   };
+  _isMounted = false
 
   componentDidMount() {
-    let user = this.props.user.firstName + ' ' + this.props.user.lastName
-    this.setState({
-      auteurTraining: user
-    })
+    this._isMounted = true
+    let user = this.props.user.firstName + ' ' + this.props.user.lastName;
+    if (this._isMounted) {
+      this.setState({
+        auteurTraining: user
+      })
+    }
+  }
+
+  componentWillUnmount() {
+    this._isMounted = false
   }
 
   handleSubmit = () => {

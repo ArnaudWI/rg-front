@@ -13,8 +13,6 @@ export default class ResponseComposant extends React.Component {
     displayNone: undefined,
   }
 
-
-
   render() {
     return (
       <View style={styles.responseBlock}>
