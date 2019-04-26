@@ -5,28 +5,51 @@ import {StyleSheet } from 'react-native';
 import { Grid, Col, View, Text, Icon, Button } from "native-base";
 // import des composants JS
 import RemoveComAboComposant from './RemoveComAboComposant';
+import ResponseComAboComposant from './ResponseComAboComposant';
 // import de redux
 import {connect} from 'react-redux';
 // import du socket
 import io from '../Sockets/sockets';
 // import de mes éléments React Navigation
 import { withNavigation } from 'react-navigation';
+//import du seemore text
+import ViewMoreText from 'react-native-view-more-text';
 
 class ComAboComposant extends React.Component {
   state = {
-    removeSmallGroup: false,
+    displayRemoveComAbo: false,
+    displayResponseComAbo: false
   }
 
   handleRemove = () => {
     this.setState({
-      removeSmallGroup: !this.state.removeSmallGroup
+      displayRemoveComAbo: !this.state.displayRemoveComAbo
+    });
+  }
+
+  handleResponse = () => {
+    this.setState({
+      displayResponseComAbo: !this.state.displayResponseComAbo
     });
   }
 
   removeComposantParent = (none) => {
     this.setState({
-      removeSmallGroup: none
+      displayRemoveComAbo: none
     });
+  }
+
+
+  renderViewMore(onPress){
+    return(
+      <Text style={{color: '#E52D2F', fontWeight: 'bold', textDecorationLine: 'underline', marginTop: 5}}onPress={onPress}>Voir plus...</Text>
+    )
+  }
+
+  renderViewLess(onPress){
+    return(
+      <Text style={{color: '#E52D2F', fontWeight: 'bold', textDecorationLine: 'underline', marginTop: 5}} onPress={onPress}>Voir moins...</Text>
+    )
   }
 
   render() {
@@ -38,7 +61,20 @@ class ComAboComposant extends React.Component {
       width: 320,
     }
 
-    if (!this.state.removeSmallGroup) {
+    let responseStyle = {
+      backgroundColor: 'black',
+      borderColor: '#E52D2F',
+      borderRightWidth: 2,
+      borderTopWidth: 1,
+      width: 320,
+
+    }
+
+    if (!this.state.displayResponseComAbo) {
+      responseStyle.display = 'none';
+    }
+
+    if (!this.state.displayRemoveComAbo) {
       removeStyle.display = 'none';
     }
 
@@ -52,7 +88,7 @@ class ComAboComposant extends React.Component {
             <Icon name="refresh" style={styles.iconAdmin}/>
           </Col>
           <Col style={styles.colTitleText}>
-            <Text style={styles.title}>Training</Text>
+            <Text style={styles.title}>Training - MMA</Text>
           </Col>
           <Col style={styles.colTitleIcon} onPress={this.handleRemove}>
             <Icon name="trash" style={styles.iconAdmin}/>
@@ -64,17 +100,23 @@ class ComAboComposant extends React.Component {
         </Grid>
 
         <Grid style={styles.gridTraining}>
-          <Text  style={styles.trainingText}>Hello, je suis Albert, je souhaiterais pratiquer du MMA tous les soir à partir de 17h. J'ai un niveau intermédiaire mais je souhaite m'améliorer pour du compétitif :) voila voila ! </Text>
+          <ViewMoreText
+           numberOfLines={3}
+           renderViewMore={this.renderViewMore}
+           renderViewLess={this.renderViewLess}
+           >
+             <Text  style={styles.trainingText}>Hello, je suis Albert, je souhaiterais pratiquer du MMA tous les soir à partir de 17h. J'ai un niveau intermédiaire mais je souhaite m'améliorer pour du compétitif :) voila voila ! </Text>
+          </ViewMoreText>
         </Grid>
 
 
 
         <Grid style={styles.gridDetails}>
           <Col style={styles.colDetailsText}>
-            <Text style={styles.detailsText}>0 Réponse</Text>
+            <Text style={styles.detailsText}>10 Réponses</Text>
           </Col>
           <Col style={styles.colDetailsBouton}>
-            <Button style={styles.detailsBouton} onPress={this.detailsSmallGroup}>
+            <Button style={styles.detailsBouton} onPress={this.handleResponse}>
               <Text style={styles.detailsTextBouton}>Voir les réponses</Text>
             </Button>
           </Col>
@@ -83,6 +125,7 @@ class ComAboComposant extends React.Component {
         <Grid style={styles.gridDate}>
           <Text style={styles.dateText}>Ajouté le 20/04</Text>
         </Grid>
+        <ResponseComAboComposant responseStyle={responseStyle}/>
         <RemoveComAboComposant removeStyle={removeStyle} id={this.props.id} removeComposant={this.removeComposantParent}/>
       </View>
     );
@@ -98,6 +141,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     marginTop: 20,
     width: 320,
+    marginBottom: 230
   },
   gridTitle: {
     height: 'auto',
@@ -122,7 +166,7 @@ const styles = StyleSheet.create({
   },
   gridTraining: {
     height: 'auto',
-    padding: 5
+    padding: 10
   },
   auteurText: {
     color: '#fff',
@@ -144,7 +188,7 @@ const styles = StyleSheet.create({
     marginRight: 10
   },
   colDetailsText: {
-    width: '40%',
+    width: '45%',
     justifyContent: 'center'
   },
   detailsText: {
@@ -155,13 +199,13 @@ const styles = StyleSheet.create({
     fontSize: 19
   },
   colDetailsBouton: {
-    width: '60%',
+    width: '55%',
     justifyContent: 'center',
     marginLeft: 5
   },
   detailsBouton: {
     height: 40,
-    width: 130,
+    width: 140,
     backgroundColor: '#373737',
     borderColor: '#E52D2F',
     borderStyle: 'solid',
