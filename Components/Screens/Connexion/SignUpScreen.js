@@ -47,7 +47,7 @@ class SignUpScreen extends React.Component {
 
   render() {
     return (
-      <ImageBackground style={{flex:1}} source={require("../../../public/images/img-bg.jpg")}>
+      <ImageBackground style={{flex:1}} source={require("../../../public/images/background-3.jpg")}>
 
       <ScrollView style={styles.view}>
 

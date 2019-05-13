@@ -2,7 +2,7 @@ import React from 'react';
 // import de l'adresse IP du backend
 import ipAddress from '../../../Network/network';
 //import bibliothèque react native
-import {StyleSheet, ScrollView} from 'react-native';
+import {StyleSheet, ScrollView, ImageBackground} from 'react-native';
 //import bibliothèque native base
 import {
   View,
@@ -59,7 +59,7 @@ class WodScreen extends React.Component {
     }
 
     return (
-      <Container style={styles.container}>
+      <ImageBackground style={{flex:1}} source={require("../../../../public/images/background-2.jpg")}>
         <HeaderMenuComposant title={'Wod de la Semaine'}/>
           <ScrollView style={{flex: 1, alignSelf: 'center'}}>
 
@@ -76,7 +76,7 @@ class WodScreen extends React.Component {
             </View>
 
           </ScrollView>
-      </Container>
+      </ImageBackground>
     );
   }
 }

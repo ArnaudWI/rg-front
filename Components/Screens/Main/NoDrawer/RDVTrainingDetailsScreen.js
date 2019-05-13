@@ -1,6 +1,6 @@
 import React from 'react';
 //import bibliothèque react native
-import {StyleSheet, ScrollView} from 'react-native';
+import {StyleSheet, ScrollView, ImageBackground} from 'react-native';
 //import bibliothèque react native
 import {
   View,
@@ -85,7 +85,7 @@ class RDVTrainingDetailsScreen extends React.Component {
       />);
 
     return (
-      <Container style={styles.container}>
+      <ImageBackground style={{flex:1}} source={require("../../../../public/images/background-2.jpg")}>
         <HeaderBackComposant title={'Training - ' + this.props.disciplineChoosen}/>
           <ScrollView style={{flex: 1, alignSelf: 'center'}}>
             <Button style={styles.bouton} onPress={ ()=> this.props.navigation.navigate('AddRDVTraining')}>
@@ -99,7 +99,7 @@ class RDVTrainingDetailsScreen extends React.Component {
 
             <View style={styles.espace}></View>
           </ScrollView>
-      </Container>
+      </ImageBackground>
     );
   }
 }
@@ -142,7 +142,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold'
   },
   indicationWithoutRDVTraining: {
-    color: 'white',
+    color: '#E52D2F',
     fontSize: 20,
     marginTop: 15,
     textAlign: 'center',

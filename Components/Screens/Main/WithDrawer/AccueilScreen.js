@@ -2,7 +2,7 @@ import React from 'react';
 // import notification élément d'expo
 import { Permissions, Notifications } from 'expo';
 //import bibliothèque react native
-import {StyleSheet, ScrollView} from 'react-native';
+import {StyleSheet, ScrollView, ImageBackground} from 'react-native';
 //import bibliothèque native base
 import {
   View,
@@ -105,7 +105,7 @@ class AccueilScreen extends React.Component {
       );
 
     return (
-      <Container style={styles.container}>
+      <ImageBackground style={{flex:1}} source={require("../../../../public/images/background-3.jpg")}>
         <HeaderMenuComposant title={'Ring Side - Dardilly'}/>
           <ScrollView style={{flex: 1, alignSelf: 'center'}}>
             <Button style={styles.bouton} onPress={this.addAnnonce}>
@@ -114,7 +114,7 @@ class AccueilScreen extends React.Component {
 
             {annonceList.reverse()}
           </ScrollView>
-      </Container>
+      </ImageBackground>
     );
   }
 }
