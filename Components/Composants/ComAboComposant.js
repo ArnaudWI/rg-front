@@ -19,28 +19,24 @@ class ComAboComposant extends React.Component {
   state = {
     displayRemoveComAbo: false,
     displayResponseComAbo: false,
-    numberOfResponses: undefined
+    numberOfResponses: this.props.responseList.length,
   }
   _isMounted = false
 
   componentDidMount() {
     this._isMounted = true
-    if (this._isMounted) {
-      this.setState({
-        numberOfResponses: this.props.responseList.length
-      })
-    }
-    io.on('responseAdded', responseList => {
-      if (this._isMounted) {
-        this.setState({
-          numberOfResponses: responseList.length,
-        });
-      }
-    });
   }
 
   componentWillUnmount() {
     this._isMounted = false
+  }
+
+  NumberofResponses = responseListLength => {
+    if (this._isMounted) {
+      this.setState({
+        numberOfResponses: responseListLength,
+      });
+    }
   }
 
   handleRemove = () => {
@@ -132,7 +128,7 @@ class ComAboComposant extends React.Component {
            numberOfLines={3}
            renderViewMore={this.renderViewMore}
            renderViewLess={this.renderViewLess}
-           >
+          >
              <Text  style={styles.trainingText}>{this.props.content}</Text>
           </ViewMoreText>
         </Grid>
@@ -153,7 +149,12 @@ class ComAboComposant extends React.Component {
         <Grid style={styles.gridDate}>
           <Text style={styles.dateText}>{this.props.date}</Text>
         </Grid>
-        <ResponseComAboComposant responseStyle={responseStyle} id={this.props.id} responseList={this.props.responseList}/>
+        <ResponseComAboComposant
+          responseStyle={responseStyle}
+          id={this.props.id}
+          responseList={this.props.responseList}
+          NumberofResponses={this.NumberofResponses}
+        />
         <RemoveComAboComposant removeStyle={removeStyle} id={this.props.id} removeComposant={this.removeComposantParent}/>
       </View>
     );

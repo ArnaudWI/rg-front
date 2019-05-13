@@ -107,7 +107,7 @@ class SmallGroupScreen extends React.Component {
             smallgroupList: smallgroupListFiltred,
           });
         }
-      } else if (disciplineSave !== 'Toutes les disciplines' && (dateSave  === 'Toutes les dates' || disciplineSave === undefined)) {
+      } else if (disciplineSave !== 'Toutes les disciplines' && (dateSave  === 'Toutes les dates' || dateSave === undefined)) {
         smallgroupListFiltred = smallgroup.filter(function (el) {
           return  el.discipline == disciplineSave;
         });

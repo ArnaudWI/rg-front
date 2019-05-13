@@ -14,24 +14,16 @@ class ResponseComAboComposant extends React.Component {
 
   state = {
     response: '',
-    responseList: []
+    responseList: this.props.responseList
   }
   _isMounted = false
 
   componentDidMount() {
     this._isMounted = true
-    if (this._isMounted) {
-      this.setState({
-        responseList: this.props.responseList
-      })
-    }
-    io.on('responseAdded', responseList => {
-      if (this._isMounted) {
-        this.setState({
-          responseList: responseList,
-        });
-      }
-    });
+  }
+
+  componentWillUnmount() {
+    this._isMounted = false
   }
 
   handleResponse = () => {
@@ -47,12 +39,15 @@ class ResponseComAboComposant extends React.Component {
         response: ''
       })
     }
+    io.on('responseAdded', responseList => {
+      if (this._isMounted) {
+        this.setState({
+          responseList: responseList,
+        });
+      }
+      this.props.NumberofResponses(responseList.length);
+    });
   }
-
-  componentWillUnmount() {
-    this._isMounted = false
-  }
-
 
   render() {
 
