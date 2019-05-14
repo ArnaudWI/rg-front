@@ -84,17 +84,31 @@ class RDVTrainingDetailsScreen extends React.Component {
       responseList={rdvtraining.responseList}
       />);
 
+    let categoryLabel;
+    let indicationWithoutAnnonce;
+    let boutonAction;
+
+    if (this.props.disciplineChoosen === 'Networking' || this.props.disciplineChoosen === 'Loisirs' || this.props.disciplineChoosen === 'Ventes et Achats') {
+      categoryLabel = 'Extra Sportif';
+      boutonAction = 'Ajouter une annonce';
+      indicationWithoutAnnonce = "Il n'y a pas d'annonces Extra Sportif dans la catégorie " + this.props.disciplineChoosen + ", cependant vous pouvez ajouter une annonce à destination de tous les adhérents Ring Side Dardilly via le bouton Ajouter une annonce ! :)";
+    } else {
+      categoryLabel = 'Training';
+      boutonAction = 'Proposer un training';
+      indicationWithoutAnnonce = "Il n'y a pas de RDV Training dans la discipline" + this.props.disciplineChoosen + ", cependant vous pouvez en proposer pour que tous les adhérents Ring Side Dardilly sachent que vous recherchez un partenaire de training ! :)";
+    }
+
     return (
       <ImageBackground style={{flex:1}} source={require("../../../../public/images/background-2.jpg")}>
-        <HeaderBackComposant title={'Training - ' + this.props.disciplineChoosen}/>
+        <HeaderBackComposant title={categoryLabel + ' - ' + this.props.disciplineChoosen}/>
           <ScrollView style={{flex: 1, alignSelf: 'center'}}>
             <Button style={styles.bouton} onPress={ ()=> this.props.navigation.navigate('AddRDVTraining')}>
-              <Text style={styles.textBouton}>Proposer un Training</Text>
+              <Text style={styles.textBouton}>{boutonAction}</Text>
             </Button>
 
 
             {rdvtrainingList.length === 0
-            ? <Text style={styles.indicationWithoutRDVTraining}>Il n'y a pas de RDV Training dans la discipline {this.props.disciplineChoosen}, cependant vous pouvez en proposer pour que tous les adhérents Ring Side Dardilly sachent que vous recherchez un partenaire de training ! :)</Text>
+            ? <Text style={styles.indicationWithoutAnnonce}>{indicationWithoutAnnonce}</Text>
             : rdvtrainingList.reverse()}
 
             <View style={styles.espace}></View>
@@ -141,7 +155,7 @@ const styles = StyleSheet.create({
     marginLeft: 'auto',
     fontWeight: 'bold'
   },
-  indicationWithoutRDVTraining: {
+  indicationWithoutAnnonce: {
     color: '#E52D2F',
     fontSize: 20,
     marginTop: 15,

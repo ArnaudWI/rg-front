@@ -102,7 +102,13 @@ class ComAboComposant extends React.Component {
       removeStyle.display = 'none';
     }
 
+    let categoryLabel;
 
+    if (this.props.disciplineChoosen === 'Networking' || this.props.disciplineChoosen === 'Loisirs' || this.props.disciplineChoosen === 'Ventes et Achats') {
+      categoryLabel = 'Extra Sportif';
+    } else {
+      categoryLabel = 'Training';
+    }
 
     return (
       <View style={styles.view}>
@@ -112,7 +118,7 @@ class ComAboComposant extends React.Component {
             <Icon name="refresh" style={styles.iconAdmin}/>
           </Col>
           <Col style={styles.colTitleText}>
-            <Text style={styles.title}>Training - {this.props.discipline}</Text>
+            <Text style={styles.title}>{categoryLabel} - {this.props.discipline}</Text>
           </Col>
           <Col style={styles.colTitleIcon} onPress={this.handleRemove}>
             <Icon name="trash" style={styles.iconAdmin}/>
@@ -161,7 +167,17 @@ class ComAboComposant extends React.Component {
   }
 }
 
-export default withNavigation(ComAboComposant);
+function mapStateToProps(state) {
+  return {
+    disciplineChoosen: state.disciplineChoosen
+  };
+}
+
+export default withNavigation(connect(
+  mapStateToProps,
+  null
+)(ComAboComposant));
+
 
 const styles = StyleSheet.create({
   view: {
