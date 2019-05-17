@@ -33,7 +33,7 @@ class SignUpScreen extends React.Component {
     .then(response => response.json())
     .then(data => {
       if (data.isUserExist) {
-        this.props.handleUserValid(data.user.lastName,data.user.firstName,data.user.email, data.user._id)
+        this.props.handleUserValid(data.user.lastName,data.user.firstName,data.user.email, data.user._id, data.user.admin)
         this.props.navigation.navigate('Accueil');
       } else {
         Toast.show({
@@ -78,13 +78,14 @@ class SignUpScreen extends React.Component {
 
 function mapDispatchToProps(dispatch) {
   return {
-    handleUserValid: function(nameUser, firstNameUser, emailUser, idUser) {
+    handleUserValid: function(nameUser, firstNameUser, emailUser, idUser, adminUser) {
       dispatch({
         type: 'setUserData',
         name: nameUser,
         firstName: firstNameUser,
         email: emailUser,
-        id: idUser
+        id: idUser,
+        statutAdmin: adminUser
       });
     },
   }

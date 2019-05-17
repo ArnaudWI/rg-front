@@ -29,26 +29,33 @@ class SignInScreen extends React.Component {
       lastName: '',
       email: '',
       password: '',
-      code: ''
+      code: '',
+      statut: undefined
     };
 
     handleSubmit = () => {
       if (this.state.code === '1' || this.state.code === '2') {
-        fetch('http://'+ipAddress+':3000/signup', {
-          method: 'POST',
-          headers: {'Content-Type': 'application/x-www-form-urlencoded'},
-          body: 'firstName='+this.state.firstName+'&lastName='+this.state.lastName+'&email='+this.state.email+'&password='+this.state.password+'&admin='+this.state.code
-        })
-        .then(response => response.json())
-        .then(data => {
-          if (data.user) {
-            this.props.handleUserValid(data.user.lastName,data.user.firstName,data.user.email, data.user._id)
-            this.props.navigation.navigate('Accueil');
-          } else {
-            console.log('erreur de log')
-          }
-        })
-        .catch(error => console.error(error))
+        if (this.state.code === '1') {
+          this.setState({
+            statut: true
+          });
+        };
+      fetch('http://'+ipAddress+':3000/signup', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+        body: 'firstName='+this.state.firstName+'&lastName='+this.state.lastName+'&email='+this.state.email+'&password='+this.state.password+'&admin='+this.state.statut
+      })
+      .then(response => response.json())
+      .then(data => {
+        if (data.user) {
+          console.log(data.user.admin)
+          this.props.handleUserValid(data.user.lastName,data.user.firstName,data.user.email, data.user._id, data.user.admin)
+          this.props.navigation.navigate('Accueil');
+        } else {
+          console.log('erreur de log')
+        }
+      })
+      .catch(error => console.error(error))
       } else {
         Toast.show({
           text: "Code Incorrect, veuillez vous renseigner à l'accueil de votre salle Ring Side",
@@ -100,13 +107,15 @@ class SignInScreen extends React.Component {
 
 function mapDispatchToProps(dispatch) {
   return {
-    handleUserValid: function(nameUser, firstNameUser, emailUser, idUser) {
+    handleUserValid: function(nameUser, firstNameUser, emailUser, idUser, adminUser) {
+      console.log(adminUser)
       dispatch({
         type: 'setUserData',
         name: nameUser,
         firstName: firstNameUser,
         email: emailUser,
-        id: idUser
+        id: idUser,
+        statutAdmin: adminUser
       });
     },
   }
