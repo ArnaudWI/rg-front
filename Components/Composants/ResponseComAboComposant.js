@@ -32,12 +32,12 @@ class ResponseComAboComposant extends React.Component {
       type: "success",
       position: "top",
       duration: 2000
-    })
+    });
     io.emit("addResponse", {idrdvtrainings: this.props.id, responseContent: this.state.response, responseAuteur: this.props.user.firstName});
     if (this._isMounted) {
       this.setState({
         response: ''
-      })
+      });
     }
     io.on('responseAdded', responseList => {
       if (this._isMounted) {

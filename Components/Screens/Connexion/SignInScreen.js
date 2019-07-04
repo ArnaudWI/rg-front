@@ -30,20 +30,21 @@ class SignInScreen extends React.Component {
       email: '',
       password: '',
       code: '',
-      statut: undefined
     };
 
     handleSubmit = () => {
+      let admin;
       if (this.state.code === '1' || this.state.code === '2') {
         if (this.state.code === '1') {
-          this.setState({
-            statut: true
-          });
-        };
+          admin = true;
+        }
+        else if (this.state.code === '2') {
+          admin = false;
+        }
       fetch('http://'+ipAddress+':3000/signup', {
         method: 'POST',
         headers: {'Content-Type': 'application/x-www-form-urlencoded'},
-        body: 'firstName='+this.state.firstName+'&lastName='+this.state.lastName+'&email='+this.state.email+'&password='+this.state.password+'&admin='+this.state.statut
+        body: 'firstName='+this.state.firstName+'&lastName='+this.state.lastName+'&email='+this.state.email+'&password='+this.state.password+'&admin='+admin
       })
       .then(response => response.json())
       .then(data => {

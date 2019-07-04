@@ -72,7 +72,7 @@ const MainNavigator = createDrawerNavigator({
 // Création de ma navigation globale qui contient à la fois mes pages non contenues
 // dans la bottom navigation et les pages de la bottom Navigation
 
-var StackNavigator = createStackNavigator({
+const StackNavigator = createStackNavigator({
   // screens de connexion
   Home: HomeScreen,
   SignUp: SignUpScreen,
