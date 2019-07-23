@@ -124,17 +124,25 @@ class MonCompteScreen extends React.Component {
               <Text style={styles.textBouton}>Mettre à jour </Text>
             </Button>
 
-            <TitleComposant title={'Listing Adhérents'}/>
-            <List style={styles.list}>
-              {usersList}
-            </List>
+
+
+
+            {this.props.user.admin ?
+              <View>
+                <TitleComposant title='Listing Adhérents'/>
+                <List style={styles.list}>
+                  {usersList}
+                </List>
+              </View>
+              : null
+            }
           </ScrollView>
       </ImageBackground>
     );
   }
 }
 
-function mapStateToProps(state) {
+const mapStateToProps = state => {
   return {
     user: state.userData,
   }

@@ -156,9 +156,13 @@ class SmallGroupScreen extends React.Component {
         <HeaderMenuComposant title={'Small Group'}/>
           <ScrollView style={{flex: 1, alignSelf: 'center'}}>
 
-          <Button style={styles.bouton} onPress={this.addSmallGroup}>
-            <Text style={styles.textBouton} >Ajouter un SmallGroup</Text>
-          </Button>
+
+          {this.props.user.admin ?
+            <Button style={styles.bouton} onPress={this.addSmallGroup}>
+              <Text style={styles.textBouton} >Ajouter un SmallGroup</Text>
+            </Button>
+            : null
+          }
 
           <Form style={styles.form}>
             <DisciplinePickerComposant chosenDiscipline={this.disciplineChoose} placeholder="Filtrer par discipline"/>
@@ -197,7 +201,7 @@ function mapDispatchToProps(dispatch) {
  }
 }
 
-function mapStateToProps(state) {
+const mapStateToProps = state => {
   return {
     user: state.userData,
   };

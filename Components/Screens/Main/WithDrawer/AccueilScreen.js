@@ -92,6 +92,7 @@ class AccueilScreen extends React.Component {
   }
 
   render() {
+    console.log(this.props.user)
 
     let annonceList = this.state.annonceList.map((annonce, i) =>
         <AnnonceComposant
@@ -108,9 +109,12 @@ class AccueilScreen extends React.Component {
       <ImageBackground style={{flex:1}} source={require("../../../../public/images/background-3.jpg")}>
         <HeaderMenuComposant title={'Ring Side - Dardilly'}/>
           <ScrollView style={{flex: 1, alignSelf: 'center'}}>
-            <Button style={styles.bouton} onPress={this.addAnnonce}>
-              <Text style={styles.textBouton}>Ajouter une annonce</Text>
-            </Button>
+            {this.props.user.admin ?
+              <Button style={styles.bouton} onPress={this.addAnnonce}>
+                <Text style={styles.textBouton}>Ajouter une annonce</Text>
+              </Button>
+              : null
+            }
 
             {annonceList.reverse()}
           </ScrollView>
@@ -133,7 +137,7 @@ function mapDispatchToProps(dispatch) {
  }
 }
 
-function mapStateToProps(state) {
+const mapStateToProps = state => {
   return {
     user: state.userData,
   }

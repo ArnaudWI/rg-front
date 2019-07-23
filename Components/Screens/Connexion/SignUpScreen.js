@@ -78,14 +78,14 @@ class SignUpScreen extends React.Component {
 
 function mapDispatchToProps(dispatch) {
   return {
-    handleUserValid: function(nameUser, firstNameUser, emailUser, idUser, adminUser) {
+    handleUserValid: function(nameUser, firstNameUser, emailUser, idUser, statutAdmin) {
       dispatch({
         type: 'setUserData',
         name: nameUser,
         firstName: firstNameUser,
         email: emailUser,
         id: idUser,
-        statutAdmin: adminUser
+        admin: statutAdmin
       });
     },
   }

@@ -51,15 +51,27 @@ class AnnonceComposant extends React.Component {
       <View style={styles.view}>
 
         <Grid style={styles.gridTitle}>
-          <Col style={styles.colTitleIcon} onPress={this.handleUpdate}>
-            <Icon name="refresh" style={styles.iconAdmin}/>
-          </Col>
+          {
+            this.props.user.admin ?
+            <Col style={styles.colTitleIcon} onPress={this.handleUpdate}>
+              <Icon name="refresh" style={styles.iconAdmin}/>
+            </Col>
+            :
+            <Col style={styles.colTitleIcon}>
+            </Col>
+          }
           <Col style={styles.colTitleText}>
             <Text style={styles.title}>{this.props.title}</Text>
           </Col>
-          <Col style={styles.colTitleIcon} onPress={this.handleRemove}>
-            <Icon name="trash" style={styles.iconAdmin}/>
-          </Col>
+          {
+            this.props.user.admin ?
+            <Col style={styles.colTitleIcon} onPress={this.handleRemove}>
+              <Icon name="trash" style={styles.iconAdmin}/>
+            </Col>
+            :
+            <Col style={styles.colTitleIcon}>
+            </Col>
+          }
         </Grid>
 
         <Grid style={styles.gridContent}>
@@ -96,8 +108,14 @@ function mapDispatchToProps(dispatch) {
  }
 }
 
+const mapStateToProps = state => {
+  return {
+    user: state.userData,
+  }
+}
+
 export default withNavigation(connect(
-  null,
+  mapStateToProps,
   mapDispatchToProps
 )(AnnonceComposant));
 

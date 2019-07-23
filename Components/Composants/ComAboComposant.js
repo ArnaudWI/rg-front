@@ -114,19 +114,31 @@ class ComAboComposant extends React.Component {
       <View style={styles.view}>
 
         <Grid style={styles.gridTitle}>
-          <Col style={styles.colTitleIcon} onPress={this.handleUpdate}>
-            <Icon name="refresh" style={styles.iconAdmin}/>
-          </Col>
+          {
+            this.props.user.admin ?
+            <Col style={styles.colTitleIcon} onPress={this.handleUpdate}>
+              <Icon name="refresh" style={styles.iconAdmin}/>
+            </Col>
+            :
+            <Col style={styles.colTitleIcon}>
+            </Col>
+          }
           <Col style={styles.colTitleText}>
             <Text style={styles.title}>{categoryLabel} - {this.props.discipline}</Text>
           </Col>
-          <Col style={styles.colTitleIcon} onPress={this.handleRemove}>
-            <Icon name="trash" style={styles.iconAdmin}/>
-          </Col>
+          {
+            this.props.user.admin ?
+            <Col style={styles.colTitleIcon} onPress={this.handleRemove}>
+              <Icon name="trash" style={styles.iconAdmin}/>
+            </Col>
+            :
+            <Col style={styles.colTitleIcon}>
+            </Col>
+          }
         </Grid>
 
         <Grid style={styles.gridTraining}>
-          <Text  style={styles.auteurText}>{this.props.auteur} propose un training :</Text>
+          <Text  style={styles.auteurText}>{this.props.auteur} dit :</Text>
         </Grid>
 
         <Grid style={styles.gridTraining}>
@@ -167,10 +179,11 @@ class ComAboComposant extends React.Component {
   }
 }
 
-function mapStateToProps(state) {
+const mapStateToProps = state => {
   return {
+    user: state.userData,
     disciplineChoosen: state.disciplineChoosen
-  };
+  }
 }
 
 export default withNavigation(connect(

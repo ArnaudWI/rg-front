@@ -63,9 +63,14 @@ class WodScreen extends React.Component {
         <HeaderMenuComposant title={'Wod de la Semaine'}/>
           <ScrollView style={{flex: 1, alignSelf: 'center'}}>
 
-            <Button style={styles.bouton} onPress={ ()=> this.props.navigation.navigate('ModifyWod')}>
-              <Text style={styles.textBouton} >Modifier le Wod</Text>
-            </Button>
+
+
+            {this.props.user.admin ?
+              <Button style={styles.bouton} onPress={ ()=> this.props.navigation.navigate('ModifyWod')}>
+                <Text style={styles.textBouton} >Modifier le Wod</Text>
+              </Button>
+              : null
+            }
 
             <TitleComposant title={'Wod du ' + dateDisplay}/>
 
@@ -81,10 +86,11 @@ class WodScreen extends React.Component {
   }
 }
 
-function mapStateToProps(state) {
+const mapStateToProps = state => {
   return {
+    user: state.userData,
     wod: state.wodData
-  };
+  }
 }
 
 export default connect(
