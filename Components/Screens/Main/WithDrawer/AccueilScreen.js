@@ -1,6 +1,7 @@
 import React from 'react';
 // import notification élément d'expo
-import { Permissions, Notifications } from 'expo';
+import { Notifications } from 'expo';
+import * as Permissions from 'expo-permissions';
 //import bibliothèque react native
 import {StyleSheet, ScrollView, ImageBackground} from 'react-native';
 //import bibliothèque native base
